@@ -4,112 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
+    <title>(1) New Message Regarding Your Tinnitus</title>
     
-    <title>(1) Unread Message</title>
-    <link rel="icon" type="image/x-icon" href="images/33ab840a118660e348a6a49784dd0b70.png">
-
-    <link rel="stylesheet" href="css/all.css">
-    <link rel="stylesheet" href="css/v4-shims.css">
-    <link rel="stylesheet" href="css/user_pages-ZRX7IJ2L.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,900|Open+Sans:400,500,700|Oswald:700|Poppins:700,900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Montserrat:wght@700;900&display=swap">
 
     <style>
-        /* Reset de escala para Mobile/Desktop */
-        html { font-size: 24px; }
-        @media (max-width: 770px) { html { font-size: 17px; } }
-
-        /* Estilos do Widget de Escassez (Pessoas Assistindo) */
-        .viewer-widget {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: white; padding: 10px 20px; border-radius: 30px;
-            display: inline-flex; align-items: center; gap: 8px;
-            font-size: 14px; font-weight: 600; box-shadow: 0 3px 15px rgba(139, 92, 246, 0.3);
+        :root {
+            --primary-blue: #0d121f;
+            --accent-red: #cc0000;
+            --text-dark: #2d2d2d;
+            --bg-gray: #f4f7f9;
         }
-        
-        /* Ocultar elementos para o Delay da VSL */
-        .vsl-delayed { display: none; }
+
+        body {
+            margin: 0; padding: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-gray);
+            color: var(--text-dark);
+            line-height: 1.4;
+        }
+
+        .top-bar {
+            background: #000; color: #fff;
+            text-align: center; padding: 10px;
+            font-size: 13px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        .main-container {
+            max-width: 850px; margin: 40px auto;
+            background: #fff; border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            padding: 40px 20px; text-align: center;
+        }
+
+        .pre-headline {
+            color: var(--accent-red);
+            font-weight: 700; font-size: 16px;
+            margin-bottom: 15px; display: block;
+            text-transform: uppercase;
+        }
+
+        .headline {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900; font-size: 32px;
+            color: var(--primary-blue);
+            margin: 0 auto 30px; line-height: 1.2;
+            max-width: 750px;
+        }
+
+        .headline span {
+            background: yellow; padding: 2px 8px;
+            color: #000;
+        }
+
+        /* Container do Player */
+        .vsl-wrapper {
+            position: relative;
+            background: #000;
+            width: 100%; aspect-ratio: 16/9;
+            border-radius: 8px; overflow: hidden;
+            margin-bottom: 25px;
+            cursor: pointer;
+        }
+
+        .vsl-overlay {
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.4);
+            color: #fff;
+        }
+
+        .vsl-overlay i { font-size: 60px; opacity: 0.8; }
+
+        .viewer-count {
+            background: #f1f1f1;
+            display: inline-flex; align-items: center;
+            padding: 8px 15px; border-radius: 50px;
+            font-size: 14px; font-weight: 600; gap: 8px;
+        }
+
+        .dot { height: 10px; width: 10px; background: #22c55e; border-radius: 50%; }
+
+        @media (max-width: 600px) {
+            .headline { font-size: 22px; }
+            .main-container { margin: 10px; padding: 25px 15px; }
+        }
     </style>
 </head>
+<body>
 
-<body class="elPageContent">
+    <div class="top-bar">Special Presentation for People Over 50</div>
 
-    <div class="containerWrapper">
-        <div class="elPageContentWrapper">
-            
-            <section class="container fullContainer" style="padding-bottom: 20px;">
-                <div class="containerInnerV2">
-                    <div class="row">
-                        <div class="col-md-12 text-center">
-                            <h1 class="elHeadline" style="font-weight: 900; color: #0d0f61; line-height: 1.1;">
-                                The Greatest Enemy of Tinnitus?<br>
-                                <span style="background: #ff0000; color: #fff; padding: 0 10px;">This 5-Minute Evening Routine</span> Stops the Ear Ringing
-                            </h1>
-                        </div>
-                    </div>
+    <div class="main-container">
+        <span class="pre-headline">Warning: Limited Time Broadcast</span>
+        
+        <h1 class="headline">
+            The Greatest Enemy of Tinnitus? <br>
+            <span>This 5-Minute Evening Routine</span> Stops the Ear Ringing
+        </h1>
 
-                    <div class="row text-center" style="margin-top: 20px;">
-                        <div class="viewer-widget">
-                            <span id="viewerCount">742</span> people from Facebook are watching
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <div class="vsl-wrapper" onclick="alert('Inicie o vídeo aqui')">
+            <div class="vsl-overlay">
+                <div style="font-size: 50px;">▶</div>
+                <p style="font-weight: bold; margin-top: 10px;">CLICK TO UNMUTE</p>
+            </div>
+        </div>
 
-            <section class="container" style="max-width: 800px; margin: 0 auto;">
-                <div id="vsl-player" style="background: #000; aspect-ratio: 16/9; border-radius: 8px; position: relative;">
-                    <div style="color: #fff; text-align: center; padding-top: 20%;">
-                        Sua VSL entrará aqui.
-                    </div>
-                </div>
-            </section>
-
-            <section id="cta-section" class="vsl-delayed">
-                <div class="row text-center" style="padding: 40px 0;">
-                    <a href="{{SEU_LINK_AQUI}}" class="elButton" style="background: #ffee2b; border: 3px solid #0000ff; padding: 20px 40px; font-weight: 900; font-size: 28px; color: #0d0f61; border-radius: 12px; text-decoration: none; display: inline-block;">
-                        ORDER NOW >>
-                    </a>
-                    <p style="margin-top: 15px; font-weight: bold; font-style: italic; color: #0d0f61;">
-                        YES! I Want To Stop My Ringing Ears Forever.
-                    </p>
-                </div>
-
-                <div class="row text-center">
-                    <img src="images/0daec2d6d25deec77370fa9e33a899a3.png" style="max-width: 100%; height: auto;" alt="Offer">
-                </div>
-            </section>
-
-            <footer style="padding: 60px 0; text-align: center; font-size: 12px; color: #999;">
-                <p>© <span id="currentYear"></span> The DaVinci Frequency. All rights reserved.</p>
-                <p>
-                    <a href="#">Privacy Policy</a> | <a href="#">Terms</a> | <a href="#">Contact</a>
-                </p>
-            </footer>
-
+        <div class="viewer-count">
+            <div class="dot"></div>
+            <span id="vCount">743</span> people are watching right now
         </div>
     </div>
 
-    <script src="js/jquery.min.js"></script>
+    <footer style="text-align: center; padding: 20px; font-size: 12px; color: #888;">
+        <p>© 2026 The DaVinci Frequency. All rights reserved.</p>
+        <p><a href="#">Terms</a> | <a href="#">Privacy</a> | <a href="#">Contact</a></p>
+    </footer>
 
     <script>
-        // 1. Contador de Visualizações (Fake Simulado)
-        (function() {
-            let count = 742;
-            const el = document.getElementById('viewerCount');
-            setInterval(() => {
-                count += Math.floor(Math.random() * 5) - 2;
-                if(el) el.innerText = count;
-            }, 3000);
-        })();
-
-        // 2. Ano Automático no Footer
-        document.getElementById('currentYear').innerText = new Date().getFullYear();
-
-        // 3. Script de Delay (Exibe o botão após X segundos)
-        const delayInSeconds = 900; // Ex: 15 minutos (900 seg)
-        setTimeout(() => {
-            document.getElementById('cta-section').style.display = 'block';
-        }, delayInSeconds * 1000);
+        // Simulação de contador natural
+        let count = 743;
+        setInterval(() => {
+            count += Math.floor(Math.random() * 3) - 1;
+            document.getElementById('vCount').innerText = count;
+        }, 4000);
     </script>
-
 </body>
 </html>
