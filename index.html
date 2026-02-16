@@ -10,20 +10,21 @@
     <title>(1) Unread Message</title>
 
     <link href="https://fonts.googleapis.com/css?family=Lato:900|Open+Sans:400,600,700|Oswald:700|Inter:500" rel="stylesheet">
-    <link rel="stylesheet" href="css/all.css"> <script src="js/jquery.min.js"></script>
+    <link rel="stylesheet" href="css/all.css"> 
+    <script src="js/jquery.min.js"></script>
 
     <style>
-        /* RESET E BASE DO CONCORRENTE */
+        /* RESET E BASE */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; padding: 0 10px; margin: 0 auto; max-width: 1000px; }
         
-        /* HEADLINE PESADA */
+        /* HEADLINE */
         .header { text-align: center; padding: 30px 0 10px; }
         h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 44px; line-height: 1.1; letter-spacing: -1px; }
         h1.elHeadline b { color: #ff0000; }
 
-        /* WIDGET FACEBOOK (PILL DESIGN) */
+        /* WIDGET FACEBOOK */
         .viewer-widget-container { display: flex; justify-content: center; margin: 15px 0; }
         .viewer-widget {
             background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
@@ -35,14 +36,14 @@
         .pulse-dot::after { content: ""; width: 100%; height: 100%; background: #10b981; border-radius: 50%; position: absolute; animation: pulse-green 2s infinite; }
         @keyframes pulse-green { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2.8); opacity: 0; } }
 
-        /* PLAYER BUNNY COM SOMBRA PROFUNDA */
+        /* PLAYER BUNNY */
         .video-wrapper { 
             position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; 
             max-width: 850px; margin: 20px auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 6px; background: #000;
         }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* NOTIFICAÇÃO DE COMPRA (SHAKING) */
+        /* NOTIFICAÇÃO DE COMPRA */
         .purchase-notify {
             background-color: #fff9c4; border: 1px solid #fbc02d; padding: 12px 20px;
             border-radius: 6px; display: inline-block; margin: 15px 0; font-size: 16px; font-weight: 700; color: #444;
@@ -50,7 +51,7 @@
         .shaking { animation: shake-box 0.5s ease-in-out; }
         @keyframes shake-box { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 
-        /* BOTÃO DE COMPRA 3D ESTILO DIGISTORE */
+        /* BOTÃO DE COMPRA 3D */
         .esconder { display: none !important; }
         .elButton {
             display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100;
@@ -62,11 +63,11 @@
         .elButton:hover { transform: scale(1.04); background: #ffef33; }
         .elButton:active { border-bottom: 2px solid #e5c100; transform: translateY(3px); }
 
-        /* ESTILO DA NOVA IMAGEM DE PAGAMENTO */
-        .payment-methods-container { margin: 5px auto 35px; max-width: 500px; padding: 0 15px; }
-        .payment-methods-img { width: 100%; height: auto; display: block; opacity: 0.9; }
+        /* IMAGEM DE MÉTODOS DE PAGAMENTO (Abaixo do botão) */
+        .payment-methods-container { margin: 10px auto 35px; max-width: 450px; padding: 0 15px; }
+        .payment-methods-img { width: 100%; height: auto; display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
 
-        /* NOTA DO DOUTOR (BOX TRACEJADA) */
+        /* NOTA DO DOUTOR */
         .dr-grant-note { 
             background: #fffef2; border: 2px dashed #d4d0a5; padding: 35px; 
             border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left;
@@ -128,8 +129,9 @@
             <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">ORDER NOW</a>
             
             <div class="payment-methods-container">
-                <img src="images/metodos-pagamento.png" alt="Secure Payment Methods: Visa, Mastercard, Amex, PayPal" class="payment-methods-img">
+                <img src="images/metodos-pagamento.png" alt="Secure Payment Methods" class="payment-methods-img">
             </div>
+
             <div class="dr-grant-note">
                 <p style="font-family:'Inter'; font-size:19px; color:#333; font-style:italic; line-height:1.6;">
                     <b style="color:red; font-style:normal; font-size:22px;">A Personal Note From Dr. Grant:</b><br><br>
@@ -156,10 +158,10 @@
     </div>
 
     <script>
-        // CONFIGURAÇÃO DO DELAY (Pitch aos 22:47 conforme roteiro)
+        // CONFIGURAÇÃO DO DELAY (Coloque 0 para ver o botão IMEDIATAMENTE durante os testes)
         var pitchTime = 1367; 
 
-        // Listener da Bunny API (Obrigatório ativar "Enable API" no painel da Bunny)
+        // Listener da Bunny API
         window.addEventListener('message', function(e) {
             if (e.data && e.data.event === 'timeupdate') {
                 if (e.data.value >= pitchTime) {
@@ -168,14 +170,19 @@
             }
         });
 
-        // Simulação de Visualizações em Tempo Real
+        // Caso o pitchTime seja 0, mostra tudo na hora
+        if(pitchTime === 0) {
+            $('#offer, #p-notify').removeClass('esconder');
+        }
+
+        // Simulação de Visualizações
         setInterval(function() {
             var n = parseInt($('#vc').text()) + (Math.floor(Math.random() * 7) - 3);
             if(n < 710) n = 734;
             $('#vc').text(n);
         }, 3500);
 
-        // Notificação de Compra Vibratória
+        // Notificação de Compra
         setInterval(function() {
             if(!$('#p-notify').hasClass('esconder')) {
                 $('#bc').text(Math.floor(Math.random() * 12) + 14);
@@ -184,7 +191,7 @@
             }
         }, 12000);
 
-        // Detector de Intenção de Saída (Exit Intent)
+        // Exit Intent
         $(document).mouseleave(function(e) {
             if (e.clientY < 0) {
                 $('#exitModal').fadeIn(200);
