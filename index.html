@@ -3,116 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex">
     <title>(1) Unread Message</title>
-    
     <link rel="icon" type="image/x-icon" href="images/favicon.png">
 
-    <meta name="description" content="The Greatest Enemy of Tinnitus? ​This 5-Minute Evening Routine Stops the Ear Ringing">
-    <meta property="og:title" content="(1) Unread Message">
-    <meta property="og:image" content="images/social-preview.webp">
-
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700,900|Open+Sans:400,500,700|Oswald:400,700|Poppins:700,900">
-
-    <link rel="stylesheet" href="assets/css/vendor/all.css">
-    <link rel="stylesheet" href="assets/css/vendor/v4-shims.css">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/main.css">
 
     <style>
-        /* Injeção da sua cor de marca técnica */
-        :root { --brand-primary: #004b57; }
+        :root { --brand: #004b57; --dark-blue: #0d0f61; }
+        .hidden { display: none !important; }
         
-        /* Estilo para esconder a oferta inicialmente */
-        .hidden-offer { display: none !important; }
-        
-        /* Pulse Animation para os botões (Preservada do concorrente) */
-        @keyframes pulse-grow-custom {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13, 15, 97, 0.7); }
-            50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(13, 15, 97, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(13, 15, 97, 0); }
+        /* 1. ANIMAÇÃO DE PULSO E BRILHO NO BOTÃO */
+        .btn-vsl {
+            background: #ffee2b; border: 3px solid #0000ff; color: var(--dark-blue);
+            padding: 20px 40px; font-size: 28px; font-weight: 900; border-radius: 10px;
+            display: inline-block; text-decoration: none; position: relative; overflow: hidden;
+            animation: pulse-grow 2s infinite ease-in-out;
         }
-        .animated-button { animation: pulse-grow-custom 2s infinite ease-in-out; }
+        .btn-vsl::after {
+            content: ''; position: absolute; top: 0; left: -150%; width: 100%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.6), transparent);
+            transform: skewX(-20deg); animation: shine 3s infinite;
+        }
+        @keyframes pulse-grow { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes shine { 0% { left: -150%; } 100% { left: 150%; } }
+
+        /* 2. BARRA DE SOCIAL PROOF (ASSISTINDO AGORA) */
+        .watching-bar {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white; padding: 10px 20px; border-radius: 30px;
+            display: inline-flex; align-items: center; gap: 8px; font-size: 14px;
+        }
+
+        /* 3. POPUP DE SAÍDA (MODAL) */
+        #exit-popup {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 1000; display: none;
+            align-items: center; justify-content: center;
+        }
+        .popup-content {
+            background: white; padding: 30px; border-radius: 15px; text-align: center; max-width: 500px;
+        }
     </style>
 </head>
-
 <body class="elPageContent">
 
-    <div class="container fullContainer" style="padding-top: 20px;">
-        <div class="row">
-            <div class="col-md-12" style="text-align: center;">
-                <h1 class="elHeadline" style="font-weight: 900; color: #0d0f61;">
-                    The Greatest Enemy of Tinnitus?<br>
-                    <span style="color: #ff0000;">This 5-Minute Evening Routine Stops the Ear Ringing</span>
-                </h1>
-                
-                <div style="margin: 20px 0;">
-                    <span style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white; padding: 10px 20px; border-radius: 30px; font-weight: 600;">
-                        ● <span id="viewerCount">742</span> people are watching right now
-                    </span>
-                </div>
+    <div style="text-align: center; padding: 20px;">
+        <h1 style="font-weight: 900; color: var(--dark-blue); font-family: sans-serif; line-height: 1.1;">
+            The Greatest Enemy of Tinnitus?<br>
+            <mark style="background: #ff0;">This 5-Minute Evening Routine Stops Ear Ringing</mark>
+        </h1>
+
+        <div style="margin: 15px 0;">
+            <div class="watching-bar">
+                <span style="color: #10b981;">●</span> <span id="viewers">742</span> people from Facebook are watching
+            </div>
+        </div>
+
+        <div style="max-width: 750px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.4);">
+            <div style="background:#000; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; color:#fff;">
+                [Your Video Player]
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div style="max-width: 800px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0,0,0,0.3);">
-                    <div style="background:#000; aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; color:#fff;">
-                        [Seu Vídeo VSL Aqui - Panda, Vimeo ou YouTube]
-                    </div>
-                </div>
-            </div>
+    <div id="offer-section" class="hidden" style="text-align: center; margin-top: 40px;">
+        <a href="https://www.checkout-ds24.com/product/653474/" class="btn-vsl">ORDER NOW >></a>
+        <div style="margin-top: 30px;">
+            <img src="images/product-bundle.webp" style="max-width: 600px; width: 90%;">
         </div>
     </div>
 
-    <div id="reveal-offer" class="hidden-offer">
-        
-        <div class="container" style="margin-top: 40px; text-align: center;">
-            <div class="row">
-                <div class="col-md-12">
-                    <a href="SUA_URL_DE_CHECKOUT_AQUI" class="elButton animated-button" style="background: #ffee2b; border: 3px solid #0000ff; color: #0d0f61; padding: 25px 50px; font-size: 28px; font-weight: 900; text-decoration: none; border-radius: 10px; display: inline-block;">
-                        ORDER NOW
-                    </a>
-                    <p style="margin-top: 15px; font-weight: bold; color: #ff0000;">
-                        <u>YES! I Want To Stop My Ringing Ears Forever.</u>
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <div class="container" style="margin-top: 50px; text-align: center;">
-            <img src="images/product-bundle.webp" style="max-width: 700px; width: 100%;" alt="The DaVinci Protocol Bundle">
-        </div>
-
-        <div class="container" style="margin-top: 40px; background: #fffeec; border: 2px dashed #e7e4b1; padding: 20px; border-radius: 10px; max-width: 600px;">
-            <p><i>"If you are over 60 and have silently resigned yourself to the ringing, I beg you: never give up on yourself."</i></p>
+    <div id="exit-popup">
+        <div class="popup-content">
+            <h2 style="color: red; font-weight: 900;">WAIT!</h2>
+            <p style="font-size: 18px; font-weight: bold;">In just 1:45... I'll reveal my 7-second ear trick!</p>
+            <button onclick="document.getElementById('exit-popup').style.display='none'" style="padding: 10px 20px; cursor: pointer;">Keep Watching</button>
         </div>
     </div>
 
-    <script src="assets/js/vendor/jquery.min.js"></script>
-    <script src="assets/js/vendor/digistore.js"></script>
-    <script type="module" src="assets/js/main.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/digistore.js"></script>
 
     <script>
-        (function() {
-            const SECONDS_TO_WAIT = 300; // 5 minutos exatos
-            const offerElement = document.getElementById('reveal-offer');
-            
-            console.log("Cronômetro de oferta iniciado: " + SECONDS_TO_WAIT + " segundos.");
-            
-            setTimeout(function() {
-                offerElement.classList.remove('hidden-offer');
-                console.log("Oferta revelada!");
-            }, SECONDS_TO_WAIT * 1000);
+        // DELAY DA OFERTA (5 MINUTOS)
+        setTimeout(() => {
+            document.getElementById('offer-section').classList.remove('hidden');
+        }, 300000);
 
-            // Simulação do contador de visualizações
-            let viewers = 742;
-            setInterval(() => {
-                viewers += Math.floor(Math.random() * 5) - 2;
-                document.getElementById('viewerCount').innerText = viewers;
-            }, 3000);
-        })();
+        // CONTADOR DE VIEWERS (IGUAL DO CONCORRENTE)
+        setInterval(() => {
+            let count = parseInt(document.getElementById('viewers').innerText);
+            document.getElementById('viewers').innerText = count + Math.floor(Math.random() * 5) - 2;
+        }, 4000);
+
+        // DETECTOR DE SAÍDA (EXIT INTENT)
+        document.addEventListener("mouseleave", function(e) {
+            if (e.clientY < 0) {
+                document.getElementById('exit-popup').style.display = 'flex';
+            }
+        }, false);
     </script>
 </body>
 </html>
