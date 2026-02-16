@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>(1) Priority Message Regarding Tinnitus</title>
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&family=Montserrat:wght@800&display=swap">
+
+    <script src="js/lazysizes.min.js" async></script>
+    <script src="js/digistore.js" async></script>
 
     <style>
         :root {
             --accent-red: #d90429;
             --navy: #000814;
             --yellow-highlight: #ffea00;
+            --green-cta: #22c55e;
         }
 
         body {
@@ -20,7 +25,6 @@
             color: #1a1a1a;
         }
 
-        /* Barra Superior mais fina e autoritária */
         .top-bar {
             background: #000; color: #fff;
             text-align: center; padding: 12px;
@@ -38,7 +42,6 @@
         .pre-headline {
             color: var(--accent-red);
             font-weight: 800; font-size: 18px;
-            letter-spacing: -0.5px;
             display: block; margin-bottom: 10px;
         }
 
@@ -50,53 +53,78 @@
             max-width: 800px;
         }
 
-        /* Destaque amarelo mais limpo */
         mark {
             background: var(--yellow-highlight);
             color: #000; padding: 0 6px;
             border-radius: 4px;
         }
 
-        /* Player de Vídeo com Sombras Internas */
+        /* Container do Vídeo */
         .vsl-container {
             width: 100%; aspect-ratio: 16/9;
             background: #000; border-radius: 10px;
             position: relative; overflow: hidden;
             box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            cursor: pointer;
+            margin-bottom: 20px;
         }
 
-        .vsl-overlay {
-            position: absolute; inset: 0;
-            background: rgba(0,0,0,0.5);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            color: #fff;
+        /* Botão de Compra (Escondido inicialmente) */
+        #cta-button {
+            display: none; /* Ativado via JS */
+            background-color: var(--green-cta);
+            color: white;
+            text-decoration: none;
+            padding: 22px 40px;
+            font-size: 26px;
+            font-weight: 800;
+            border-radius: 10px;
+            border-bottom: 5px solid #16a34a;
+            margin-top: 30px;
+            display: none; 
+            transition: transform 0.2s;
+            animation: pulse 2s infinite;
         }
 
-        .play-icon {
-            font-size: 80px; margin-bottom: 15px;
-            filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
-        /* Social Proof discreto */
+        /* Seção de Autoridade (Imagens WebP) */
+        .authority-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .authority-section img {
+            max-width: 250px;
+            border-radius: 8px;
+            filter: grayscale(20%);
+        }
+
         .watching-now {
             margin-top: 30px;
             background: #f8f9fa;
             display: inline-flex; align-items: center;
             padding: 10px 20px; border-radius: 50px;
-            font-size: 15px; font-weight: 500; color: #4a4a4a;
+            font-size: 14px; font-weight: 500; color: #4a4a4a;
         }
 
         .live-dot {
             height: 8px; width: 8px; background: #22c55e;
             border-radius: 50%; margin-right: 10px;
-            box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
         }
 
         @media (max-width: 768px) {
-            .headline { font-size: 26px; }
+            .headline { font-size: 24px; }
             .main-card { margin: 10px; padding: 30px 15px; }
+            #cta-button { font-size: 20px; width: 100%; box-sizing: border-box; }
         }
     </style>
 </head>
@@ -112,24 +140,40 @@
         </h1>
 
         <div class="vsl-container">
-            <div class="vsl-overlay">
-                <div class="play-icon">▶</div>
-                <div style="font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Click To Unmute</div>
-            </div>
+            <div style="color:white; padding-top:20%;">[Seu Vídeo Aqui]</div>
         </div>
+
+        <a href="SEU_LINK_DE_CHECKOUT_AQUI" id="cta-button">
+            YES! I WANT TO SILENCE THE RINGING
+        </a>
 
         <div class="watching-now">
             <div class="live-dot"></div>
-            <span><strong id="liveNum">741</strong> people are watching this routine right now</span>
+            <span><strong id="liveNum">741</strong> people are watching right now</span>
+        </div>
+
+        <div class="authority-section">
+            <img data-src="images/6874647470733a2f2f63646e2e636c69636b66756e6e656c732e636f6d2f6173736574732f626c75657072696e74732f64656661756c742f706c616365686f6c6465722d696d6167652e7376672d31.webp" class="lazyload" alt="Scientific Detail">
+            <img data-src="images/33ab8400f074d20914c68880625f9b4f-1.webp" class="lazyload" alt="Ear Anatomy Detail">
         </div>
     </div>
 
     <script>
+        // 1. Contador de Pessoas Ativas
         let base = 741;
         setInterval(() => {
             base += Math.floor(Math.random() * 5) - 2;
             document.getElementById('liveNum').innerText = base;
         }, 3000);
+
+        // 2. SCRIPT DE DELAY (O "PULO DO GATO")
+        // Defina o tempo em segundos (ex: 840 para 14 minutos)
+        const SECONDS_TO_DELAY = 10; // Coloquei 10 segundos apenas para você testar agora
+
+        setTimeout(() => {
+            const btn = document.getElementById('cta-button');
+            btn.style.display = 'inline-block';
+        }, SECONDS_TO_DELAY * 1000);
     </script>
 </body>
 </html>
