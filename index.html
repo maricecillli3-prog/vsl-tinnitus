@@ -56,11 +56,15 @@
             display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100;
             color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif;
             font-size: 38px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px;
-            box-shadow: 0 12px 25px rgba(235, 193, 0, 0.3); transition: all 0.2s; margin: 30px 0;
+            box-shadow: 0 12px 25px rgba(235, 193, 0, 0.3); transition: all 0.2s; margin-top: 30px; margin-bottom: 10px;
             text-transform: uppercase; cursor: pointer;
         }
         .elButton:hover { transform: scale(1.04); background: #ffef33; }
         .elButton:active { border-bottom: 2px solid #e5c100; transform: translateY(3px); }
+
+        /* ESTILO DA NOVA IMAGEM DE PAGAMENTO */
+        .payment-methods-container { margin: 5px auto 35px; max-width: 500px; padding: 0 15px; }
+        .payment-methods-img { width: 100%; height: auto; display: block; opacity: 0.9; }
 
         /* NOTA DO DOUTOR (BOX TRACEJADA) */
         .dr-grant-note { 
@@ -93,7 +97,7 @@
                 <img src="images/687464baa74f39b47aca7abf1a71422d.png" style="width:130px; border-radius:12px; box-shadow:0 8px 20px rgba(0,0,0,0.15);">
                 <p style="font-size:16px; line-height:1.5; color:#333;">"Este é um método simples que você pode fazer em casa. Acredite, você não vai querer perder essa revelação final."</p>
             </div>
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="font-size:20px; margin-top:0;">QUERO CONTINUAR ASSISTINDO >></a>
+            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="font-size:20px; margin-top:0; margin-bottom: 20px;">QUERO CONTINUAR ASSISTINDO >></a>
         </div>
     </div>
 
@@ -120,8 +124,12 @@
         </div>
 
         <div id="offer" class="esconder" style="text-align: center;">
+            
             <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">ORDER NOW</a>
             
+            <div class="payment-methods-container">
+                <img src="images/metodos-pagamento.png" alt="Secure Payment Methods: Visa, Mastercard, Amex, PayPal" class="payment-methods-img">
+            </div>
             <div class="dr-grant-note">
                 <p style="font-family:'Inter'; font-size:19px; color:#333; font-style:italic; line-height:1.6;">
                     <b style="color:red; font-style:normal; font-size:22px;">A Personal Note From Dr. Grant:</b><br><br>
@@ -130,7 +138,7 @@
                 <img src="images/0daec2d6d25deec77370fa9e33a899a3.png" style="margin-top:30px; width:100%; border-radius:10px;">
             </div>
 
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">YES! I WANT SILENCE</a>
+            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="margin-top: 30px;">YES! I WANT SILENCE</a>
             
             <div style="margin: 50px 0;">
                 <img src="images/fc00db42cd71a4a2d6da13f0aba6359d.png" style="max-width:340px;">
