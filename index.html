@@ -12,69 +12,74 @@
     <script src="js/jquery.min.js"></script>
 
     <style>
-        /* RESET & ESTRUTURA */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Open Sans', sans-serif; background: #fff; color: #333; }
+        body { font-family: 'Open Sans', sans-serif; background: #fff; color: #333; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; padding: 0 15px; margin: 0 auto; max-width: 1100px; }
         
-        /* HEADLINE */
+        /* Headline */
         .header { text-align: center; padding: 25px 0; }
         h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 42px; line-height: 1.1; }
         h1.elHeadline b { color: #ff0000; }
 
-        /* PLAYER WRAPPER */
-        .video-container { 
-            width: 100%; max-width: 850px; margin: 0 auto; 
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden;
-            background: #000; position: relative;
+        /* Bunny Player Wrapper */
+        .video-wrapper { 
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; 
+            max-width: 850px; margin: 0 auto; box-shadow: 0 15px 45px rgba(0,0,0,0.3); border-radius: 8px;
         }
-        /* Ajuste para Player HTML5 ou Iframe */
-        .video-container iframe, .video-container video { width: 100%; display: block; border: 0; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* WIDGETS */
+        /* Widgets */
         .viewer-widget {
             background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
             color: white; padding: 10px 25px; border-radius: 30px;
             display: inline-flex; align-items: center; gap: 10px; font-size: 14px; margin-top: 15px;
         }
-        .pulse-dot { width: 10px; height: 10px; background: #10b981; border-radius: 50%; animation: p-green 2s infinite; }
-        @keyframes p-green { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1.4); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); } }
+        .pulse-dot { width: 10px; height: 10px; background: #10b981; border-radius: 50%; animation: pulse-green 2s infinite; }
+        @keyframes pulse-green { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1.3); box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { transform: scale(1); } }
 
-        /* OFERTA */
-        .esconder { display: none !important; }
-        .btn-vendas {
-            display: inline-block; background: #ffee2b; border: 3px solid #ffb71e;
-            color: #0d0f61; padding: 25px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif;
-            font-size: 38px; font-weight: 700; text-decoration: none; width: 100%; max-width: 650px;
-            animation: pulse-btn 2s infinite; margin: 30px 0;
+        .purchase-notify {
+            background-color: #fffeec; border: 1px solid #e7e4b1; padding: 10px 15px;
+            border-radius: 4px; display: inline-block; margin-top: 20px; font-size: 15px;
         }
-        @keyframes pulse-btn { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        .shaking { animation: shake-box 0.4s ease-in-out; }
+        @keyframes shake-box { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-3px); } 40%, 80% { transform: translateX(3px); } }
 
-        .dr-grant-card { 
+        /* Oferta Oculta */
+        .esconder { display: none !important; }
+        .elButton {
+            display: inline-block; background: #ffee2b; border: 3px solid #ffb71e;
+            color: #0d0f61; padding: 22px 35px; border-radius: 12px; font-family: 'Oswald', sans-serif;
+            font-size: 36px; font-weight: 700; text-decoration: none; width: 100%; max-width: 600px;
+            animation: btn-pulse 2s infinite; margin: 30px 0;
+        }
+        @keyframes btn-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
+
+        .dr-grant-note { 
             background: #fffef2; border: 2px dashed #e7e4b1; padding: 30px; 
             border-radius: 10px; margin: 40px auto; max-width: 850px; text-align: left;
         }
 
-        /* FOOTER */
-        footer { border-top: 1px solid #eee; padding: 60px 0; text-align: center; font-size: 12px; color: #999; line-height: 2; }
+        /* Footer */
+        footer { border-top: 1px solid #eee; padding: 50px 0; text-align: center; font-size: 12px; color: #aaa; line-height: 1.8; }
 
-        /* MODAL */
-        .modal-exit { display: none; position: fixed; z-index: 9999; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(5px); }
-        .modal-box { background: white; margin: 8% auto; padding: 40px; width: 90%; max-width: 600px; border-radius: 15px; border: 6px solid #0d0f61; text-align: center; }
+        /* Exit Modal */
+        .modal-exit { display: none; position: fixed; z-index: 9999; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(4px); }
+        .modal-content { background: white; margin: 8% auto; padding: 35px; width: 90%; max-width: 600px; border-radius: 15px; border: 5px solid #0d0f61; position: relative; text-align: center; }
     </style>
 </head>
 
 <body>
 
     <div id="exitModal" class="modal-exit">
-        <div class="modal-box">
-            <h1 style="color:#0d0f61; font-size:32px;">WAIT! In Just 1:45...</h1>
+        <div class="modal-content">
+            <span style="position:absolute; right:15px; top:5px; font-size:30px; cursor:pointer;" onclick="$('#exitModal').hide()">&times;</span>
+            <h1 style="color:#0d0f61; font-size:28px;">WAIT! In Just 1:45...</h1>
             <p style="color:red; font-weight:bold; margin:15px 0;">I'll Reveal My 7-Second Ear Trick That Silences Tinnitus Fast!</p>
             <div style="display:flex; align-items:center; gap:20px; text-align:left;">
-                <img src="images/687464baa74f39b47aca7abf1a71422d.png" style="width:160px; border-radius:10px;">
-                <p style="font-size:16px;">It's a 7-second "ear trick" you can do at home right now. Believe me, you'll love this.</p>
+                <img src="images/687464baa74f39b47aca7abf1a71422d.png" style="width:150px; border-radius:10px;">
+                <p>It's a 7-second "ear trick" you can do at home right now. Believe me, you'll love this.</p>
             </div>
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="btn-vendas" style="font-size:24px; padding:15px;">Keep Watching >></a>
+            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="font-size:22px; padding:15px;">Keep Watching >></a>
         </div>
     </div>
 
@@ -87,34 +92,38 @@
             </div>
         </div>
 
-        <div class="video-container">
-            <video id="vsl-video" controlsList="nodownload" oncontextmenu="return false;" autoplay>
-                <source src="SEU_LINK_DIRETO_DO_VIDEO.mp4" type="video/mp4">
-            </video>
+        <div class="video-wrapper">
+            <iframe id="bunny-video" src="https://iframe.mediadelivery.net/embed/LIBRARY_ID/VIDEO_ID?autoplay=true" allow="autoplay;fullscreen" allowfullscreen></iframe>
         </div>
 
-        <div id="oferta" class="esconder" style="text-align: center;">
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="btn-vendas">ORDER NOW</a>
+        <div style="text-align:center;">
+            <div id="p-notify" class="purchase-notify esconder">
+                <span id="bc" style="font-weight:700;">15</span> Others Are Purchasing The DaVinci Frequency Right Now
+            </div>
+        </div>
+
+        <div id="offer" class="esconder" style="text-align: center;">
+            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">ORDER NOW</a>
             
-            <div class="dr-grant-card">
+            <div class="dr-grant-note">
                 <p style="font-family:'Inter'; font-size:18px; color:#333; font-style:italic;">
                     <b style="color:red; font-style:normal;">A Personal Note From Dr. Grant:</b><br><br>
                     "If you are over 60 and have silently resigned yourself to the ringing, I beg you: <u style="color:red;">never give up on yourself.</u> Please, just give this an honest try for a few days; words cannot describe this, you simply have to experience it."
                 </p>
-                <img src="images/0daec2d6d25deec77370fa9e33a899a3.png" style="margin-top:30px; width:100%;">
+                <img src="images/0daec2d6d25deec77370fa9e33a899a3.png" style="margin-top:25px; width:100%;">
             </div>
 
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="btn-vendas">YES! I WANT SILENCE</a>
+            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">YES! I WANT SILENCE</a>
             
             <div style="margin: 40px 0;">
-                <img src="images/fc00db42cd71a4a2d6da13f0aba6359d.png" style="max-width:300px;">
-                <p style="font-size:14px; color:#666; margin-top:10px;">365 Days Money Back Guarantee</p>
+                <img src="images/fc00db42cd71a4a2d6da13f0aba6359d.png" style="max-width:280px;">
+                <p style="font-size:13px; color:#888; margin-top:10px;">365 Days Money Back Guarantee</p>
             </div>
 
             <footer>
                 <p>All rights reserved. TOS apply. | <a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
                 <p>Support: support@tinnituswave.com</p>
-                <div style="max-width:850px; margin:25px auto;">
+                <div style="max-width:850px; margin:20px auto;">
                     <p>Digistore24 is the reseller for The DaVinci Frequency.</p>
                     <p style="opacity:0.6;">This site is not a part of the Facebook website or Facebook Inc. FACEBOOK is a trademark of FACEBOOK, Inc.</p>
                 </div>
@@ -123,22 +132,33 @@
     </div>
 
     <script>
-        // CONFIGURAÇÃO DO DELAY (Pitch aos 22:47 conforme concorrente ou 23:00 conforme script)
-        var pitchSecs = 1380; // Defina o segundo exato
-        var video = document.getElementById('vsl-video');
+        // CONFIGURAÇÃO DO DELAY
+        // Baseado em 48min de VSL, o pitch deve ser por volta de 1800 segundos (30min)
+        var pitchTime = 1800; // Ajuste para o segundo exato do seu vídeo
 
-        video.ontimeupdate = function() {
-            if (video.currentTime >= pitchSecs) {
-                $('#oferta').removeClass('esconder');
+        // Bunny Stream API Listener
+        window.addEventListener('message', function(e) {
+            if (e.data && e.data.event === 'timeupdate') {
+                if (e.data.value >= pitchTime) {
+                    $('#offer, #p-notify').removeClass('esconder');
+                }
             }
-        };
+        });
 
         // Fake Viewers
         setInterval(function() {
-            var el = $('#vc');
-            var n = parseInt(el.text()) + (Math.floor(Math.random() * 5) - 2);
-            el.text(n);
+            var n = parseInt($('#vc').text()) + (Math.floor(Math.random() * 5) - 2);
+            $('#vc').text(n);
         }, 3000);
+
+        // Purchase Notify Shake
+        setInterval(function() {
+            if(!$('#p-notify').hasClass('esconder')) {
+                $('#bc').text(Math.floor(Math.random() * 16) + 9);
+                $('#p-notify').addClass('shaking');
+                setTimeout(()=> $('#p-notify').removeClass('shaking'), 500);
+            }
+        }, 8000);
 
         // Exit Intent
         $(document).mouseleave(function(e) {
