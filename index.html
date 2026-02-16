@@ -19,59 +19,148 @@
     <script src="js/lazysizes.min.js"></script>
 
     <style>
-        /* --- CORREÇÃO DE RESPONSIVIDADE (MOBILE VS DESKTOP) --- */
+        /* =========================================
+           ARMADURA CSS (ESTRUTURA DE EMERGÊNCIA)
+           Isso organiza a página mesmo sem os arquivos externos
+           ========================================= */
         
-        /* Por padrão (Desktop), esconde coisas de mobile */
+        * { box-sizing: border-box; }
+        body { margin: 0; padding: 0; font-family: 'Open Sans', sans-serif; background-color: #fff; }
+        img { max-width: 100%; height: auto; }
+
+        /* GRID SYSTEM (Para organizar colunas) */
+        .container {
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-right: auto;
+            margin-left: auto;
+            max-width: 1170px;
+        }
+        .containerInnerV2 { width: 100%; margin: 0 auto; }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+            justify-content: center; /* Centraliza tudo */
+        }
+        .col-md-12, .col-md-7, .col-md-5 {
+            position: relative;
+            width: 100%;
+            padding-right: 15px;
+            padding-left: 15px;
+        }
+
+        /* CONFIGURAÇÃO DE COLUNAS DESKTOP */
+        @media (min-width: 771px) {
+            .col-md-5 { flex: 0 0 41.666667%; max-width: 41.666667%; }
+            .col-md-7 { flex: 0 0 58.333333%; max-width: 58.333333%; }
+            .col-md-12 { flex: 0 0 100%; max-width: 100%; }
+        }
+
+        /* POP-UP (MODAL) - Arrumando para não quebrar o topo */
+        .elModal {
+            display: none; /* Escondido por padrão, o JS ativa se precisar */
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            backdrop-filter: blur(5px);
+        }
+        .containerModal {
+            margin: 10% auto;
+            width: 80%;
+            max-width: 700px;
+            position: relative;
+        }
+
+        /* TEXTOS E ELEMENTOS */
+        h1, h2, h3 { margin-top: 0; margin-bottom: 15px; color: #000; }
+        .elHeadlineWrapper { text-align: center; margin-bottom: 20px; }
+        
+        /* BOTÕES */
+        .elBTN { text-align: center; margin: 20px 0; }
+        .elButton {
+            display: inline-block;
+            background: #ffee2b;
+            border: 2px solid #e6b800;
+            color: #0d0f61;
+            padding: 20px 40px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .elButton:hover { transform: scale(1.02); }
+        .elButtonMainText { font-family: 'Oswald', sans-serif; font-size: 32px; display: block; line-height: 1; }
+        
+        /* RESPONSIVIDADE (MOBILE VS DESKTOP) */
         .mobile-only { display: none !important; }
         .desktop-only { display: block !important; }
 
-        /* Quando a tela for menor que 770px (Mobile/Tablet Vertical) */
         @media (max-width: 770px) {
             .desktop-only { display: none !important; }
             .mobile-only { display: block !important; }
             
-            /* Ajustes finos para o texto não ficar gigante no celular */
+            /* Ajustes Mobile */
+            .elButton { width: 100%; padding: 15px; }
+            .elButtonMainText { font-size: 24px; }
             h1.elHeadline { font-size: 24px !important; line-height: 1.3 !important; }
-            .elButtonMainText { font-size: 28px !important; }
+            
+            /* Forçar colunas a empilhar no mobile */
+            .col-md-5, .col-md-7 { flex: 0 0 100%; max-width: 100%; }
         }
 
-        /* --- ESTILOS GERAIS --- */
-        :root { --brand-primary: #004b57; }
-        
-        /* Botão Pulsante Amarelo */
+        /* ANIMAÇÃO PULSE */
         @keyframes pulse-yellow {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 238, 43, 0.7); }
             50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 238, 43, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 238, 43, 0); }
         }
-        .elButton { 
-            background: #ffee2b !important; 
-            border: 2px solid #e6b800 !important;
-            color: #0d0f61 !important;
-            animation: pulse-yellow 2s infinite;
-        }
+        .elButton { animation: pulse-yellow 2s infinite; }
 
-        /* Esconder Vturb/Oferta inicialmente */
+        /* Esconder Elementos Vturb/Oferta inicialmente */
         .vturb-hidden { display: none !important; }
+        
+        /* Links */
+        a { color: inherit; }
+        .elTypographyLink { color: blue; text-decoration: underline; cursor: pointer; }
     </style>
-
-    </head>
+</head>
 
 <body class="elPageContent">
 
     <div class="id-6Z-qg6jOB-1">
-        <div class="elModal modal-wrapper id-Modal/V1">
+        <div class="elModal modal-wrapper id-Modal/V1" id="exitModal">
             <div class="elModalInnerContainer">
-                <div class="elModalClose"><div class="closeLPModal"><i class="fas fa-times"></i></div></div>
+                <div class="elModalClose" onclick="document.getElementById('exitModal').style.display='none'" style="position: absolute; right: 10px; top: 10px; cursor: pointer; font-size: 24px; color: #fff;">&times;</div>
+                
                 <div class="elModalInner">
                     <div class="containerModal containerModal-v2" id="modalPopup">
                         <div class="containerInnerV2">
-                            <div class="container fullContainer" style="background: white; padding: 20px; border-radius: 10px;">
-                                <h1 style="color: #0d0f61; font-weight: 900; text-align: center;">WAIT! In Just 1:45...</h1>
-                                <h2 style="text-align: center; font-size: 18px;">I'll Reveal My 7-Second Ear Trick That Silences Tinnitus Fast!</h2>
+                            <div class="container fullContainer" style="background: white; padding: 30px; border-radius: 10px; border: 4px solid #0d0f61;">
+                                <h1 style="color: #0d0f61; font-weight: 900; text-align: center; font-size: 32px;">WAIT! In Just 1:45...</h1>
+                                <h2 style="text-align: center; font-size: 20px; color: #333;">I'll Reveal My 7-Second Ear Trick That Silences Tinnitus Fast!</h2>
+                                
+                                <div class="row" style="margin-top: 20px; align-items: center;">
+                                    <div class="col-md-5">
+                                        <img src="images/687464baa74f39b47aca7abf1a71422d.png" style="border-radius: 5px;">
+                                    </div>
+                                    <div class="col-md-7">
+                                        <p style="font-size: 16px;">It's a 7-second "ear trick" you can do at home right now. <b>Believe me, you'll love this.</b></p>
+                                    </div>
+                                </div>
+
                                 <div style="text-align: center; margin-top: 20px;">
-                                    <a href="#close-popup" class="elButton" style="padding: 15px 30px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 20px;">
-                                        Keep Watching >>
+                                    <a href="#" onclick="document.getElementById('exitModal').style.display='none'; return false;" class="elButton" style="width: 100%;">
+                                        <span class="elButtonMainText" style="font-size: 22px;">Keep Watching >></span>
                                     </a>
                                 </div>
                             </div>
@@ -86,27 +175,27 @@
         <div class="elPageContentWrapper">
             <div class="elPageContent">
                 
-                <div class="container fullContainer id-6Z-qg6jOB-4154">
+                <div class="container fullContainer id-6Z-qg6jOB-4154" style="margin-top: 20px;">
                     <div class="containerInnerV2">
                         <div class="row">
                             <div class="col-md-12 innerContent">
                                 
-                                <div class="elHeadlineWrapper desktop-only" style="text-align: center; margin-bottom: 20px;">
-                                    <h1 class="elHeadline" style="font-size: 42px; font-weight: 900; color: #000;">
+                                <div class="elHeadlineWrapper desktop-only">
+                                    <h1 class="elHeadline" style="font-size: 46px; font-weight: 900; line-height: 1.1;">
                                         <b>The Greatest Enemy of Tinnitus?</b><br>
                                         This 5-Minute Evening Routine Stops the Ear Ringing
                                     </h1>
                                 </div>
 
-                                <div class="elHeadlineWrapper mobile-only" style="text-align: center; margin-bottom: 20px;">
-                                    <h1 class="elHeadline" style="font-size: 26px; font-weight: 900; color: #000;">
+                                <div class="elHeadlineWrapper mobile-only">
+                                    <h1 class="elHeadline" style="font-size: 26px; font-weight: 900; line-height: 1.3;">
                                         <b>The Greatest Enemy of Tinnitus?</b><br>
                                         This 5-Minute Evening Routine Stops the Ear Ringing
                                     </h1>
                                 </div>
 
-                                <div style="text-align:center; padding:10px 0;">
-                                    <div style="background:linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color:white; padding:8px 20px; border-radius:30px; display:inline-flex; align-items:center; gap:8px; font-size: 14px;">
+                                <div style="text-align:center; padding:15px 0;">
+                                    <div style="background:linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color:white; padding:10px 25px; border-radius:30px; display:inline-flex; align-items:center; gap:8px; font-size: 14px; box-shadow: 0 4px 10px rgba(139, 92, 246, 0.3);">
                                         <span style="font-weight:600;">742</span> people from <span style="font-weight:600;color:#fbbf24;">Facebook</span> are watching
                                     </div>
                                 </div>
@@ -116,7 +205,7 @@
 
                         <div class="row">
                             <div class="col-md-12 innerContent">
-                                <div style="width:100%; max-width:800px; margin:0 auto;">
+                                <div style="width:100%; max-width:800px; margin:0 auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2);">
                                     <vturb-smartplayer id="vid-69416c540da2b0a07875e001"></vturb-smartplayer>
                                     <script type="text/javascript">
                                         var s=document.createElement("script");
@@ -125,63 +214,63 @@
                                     </script>
                                 </div>
                                 
-                                <div id="compra-recente-wrapper" class="vturb-hidden" style="text-align:center; background:#fffeec; padding:8px; margin-top: 10px; border: 1px solid #eee;">
+                                <div id="compra-recente-wrapper" class="vturb-hidden" style="text-align:center; background:#fffeec; padding:10px; margin-top: 15px; border: 1px solid #e7e4b1; border-radius: 5px; max-width: 800px; margin-left: auto; margin-right: auto;">
                                     <span style="font-weight:bold; color: #000;">15</span> Others Are Purchasing The DaVinci Frequency Right Now
                                 </div>
                             </div>
                         </div>
 
-                        <div id="offer-desktop" class="row desktop-only vturb-hidden" style="margin-top: 30px;">
+                        <div id="offer-desktop" class="row desktop-only vturb-hidden" style="margin-top: 40px;">
                             <div class="col-md-12 innerContent" style="text-align: center;">
                                 <div class="elBTN">
-                                    <a href="SEU_LINK_DE_CHECKOUT_AQUI" class="elButton" style="width: 70%; display: inline-block; padding: 30px;">
-                                        <span class="elButtonMainText elButtonText" style="font-size: 40px; font-weight: 900;">ORDER NOW</span>
+                                    <a href="SEU_LINK_DE_CHECKOUT_AQUI" class="elButton" style="width: 70%;">
+                                        <span class="elButtonMainText elButtonText">ORDER NOW</span>
                                     </a>
                                 </div>
                                 <div style="margin-top: 10px;">
-                                    <a href="SEU_LINK_DE_CHECKOUT_AQUI" style="color: blue; text-decoration: underline;">
+                                    <a href="SEU_LINK_DE_CHECKOUT_AQUI" class="elTypographyLink">
                                         YES! I Want To Stop My Ringing Ears Forever. (Add This To My Cart)
                                     </a>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="offer-mobile" class="row mobile-only vturb-hidden" style="margin-top: 20px;">
+                        <div id="offer-mobile" class="row mobile-only vturb-hidden" style="margin-top: 30px;">
                             <div class="col-md-12 innerContent" style="text-align: center;">
                                 <div class="elBTN">
-                                    <a href="SEU_LINK_DE_CHECKOUT_AQUI" class="elButton" style="width: 100%; display: block; padding: 20px;">
-                                        <span class="elButtonMainText elButtonText" style="font-size: 30px; font-weight: 900;">ORDER NOW</span>
+                                    <a href="SEU_LINK_DE_CHECKOUT_AQUI" class="elButton">
+                                        <span class="elButtonMainText elButtonText">ORDER NOW</span>
                                     </a>
                                 </div>
-                                <div style="margin-top: 10px;">
-                                    <a href="SEU_LINK_DE_CHECKOUT_AQUI" style="color: blue; text-decoration: underline; font-size: 14px;">
+                                <div style="margin-top: 15px;">
+                                    <a href="SEU_LINK_DE_CHECKOUT_AQUI" class="elTypographyLink" style="font-size: 14px;">
                                         YES! I Want To Stop My Ringing Ears Forever. (Add This To My Cart)
                                     </a>
                                 </div>
                             </div>
                         </div>
 
-                        <div id="offer-img" class="row vturb-hidden" style="margin-top: 30px;">
+                        <div id="offer-img" class="row vturb-hidden" style="margin-top: 40px;">
                             <div class="col-md-12 innerContent" style="text-align: center;">
-                                <img src="images/0daec2d6d25deec77370fa9e33a899a3.png" style="max-width: 100%; width: 600px;">
+                                <img src="images/0daec2d6d25deec77370fa9e33a899a3.png" style="max-width: 100%; width: 700px; border-radius: 10px;">
                             </div>
                         </div>
 
-                        <div id="offer-guarantee" class="row vturb-hidden" style="margin-top: 20px;">
+                        <div id="offer-guarantee" class="row vturb-hidden" style="margin-top: 30px;">
                             <div class="col-md-12 innerContent" style="text-align: center;">
                                 <img src="images/fc00db42cd71a4a2d6da13f0aba6359d.png" style="max-width: 200px;">
-                                <p style="font-size: 12px; margin-top: 10px;">365 Days Money Back Guarantee</p>
+                                <p style="font-size: 13px; margin-top: 10px; color: #555;">365 Days Money Back Guarantee</p>
                             </div>
                         </div>
 
-                        <div id="footer-legal" class="container fullContainer vturb-hidden" style="margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px;">
-                            <div style="text-align: center; font-size: 12px; color: #666;">
+                        <div id="footer-legal" class="container fullContainer vturb-hidden" style="margin-top: 60px; border-top: 1px solid #eee; padding-top: 30px; padding-bottom: 50px;">
+                            <div style="text-align: center; font-size: 12px; color: #777;">
                                 <p>All rights reserved. TOS apply.</p>
                                 <p>
-                                    <a href="#" style="color: #666;">Privacy Policy</a> | 
-                                    <a href="#" style="color: #666;">Terms and Conditions</a>
+                                    <a href="#" style="text-decoration:none;">Privacy Policy</a> | 
+                                    <a href="#" style="text-decoration:none;">Terms and Conditions</a>
                                 </p>
-                                <p style="margin-top: 10px;">
+                                <p style="margin-top: 15px; max-width: 800px; margin-left: auto; margin-right: auto;">
                                     This site is not a part of the Facebook website or Facebook Inc. Additionally, This site is NOT endorsed by Facebook in any way. FACEBOOK is a trademark of FACEBOOK, Inc.
                                 </p>
                             </div>
@@ -195,11 +284,10 @@
 
     <script>
         (function() {
-            // Tempo em milissegundos (5 minutos = 300000)
-            // Para testar, mude para 5000 (5 segundos)
+            // DELAY DE 5 MINUTOS (300.000 ms)
+            // Para testar agora, troque 300000 por 5000 (5 segundos)
             var delayTime = 300000; 
 
-            // IDs dos elementos que devem aparecer
             var offerElements = [
                 'compra-recente-wrapper',
                 'offer-desktop',
@@ -215,13 +303,8 @@
                     if (el) {
                         el.classList.remove('vturb-hidden');
                         
-                        // Garante que o CSS de desktop/mobile controle a exibição
-                        if(id === 'offer-desktop') {
-                            el.classList.add('desktop-only');
-                        }
-                        if(id === 'offer-mobile') {
-                            el.classList.add('mobile-only');
-                        }
+                        if(id === 'offer-desktop') el.classList.add('desktop-only');
+                        if(id === 'offer-mobile') el.classList.add('mobile-only');
                     }
                 });
                 console.log("Oferta Liberada!");
