@@ -12,28 +12,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <style>
-        /* CSS LIMPO E INDEPENDENTE */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; padding: 0 10px; margin: 0 auto; max-width: 1000px; text-align: center; }
         
-        /* Headline */
-        .header { padding: 30px 0 10px; }
-        h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 44px; line-height: 1.1; letter-spacing: -1px; }
+        h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 44px; line-height: 1.1; margin-top: 30px; }
         h1.elHeadline b { color: #ff0000; }
 
-        /* Widget Facebook Superior */
-        .viewer-widget {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: white; padding: 8px 25px; border-radius: 50px;
-            display: inline-flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600;
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.35); margin: 15px 0;
-        }
-        .pulse-dot { width: 10px; height: 10px; background: #10b981; border-radius: 50%; position: relative; }
-        .pulse-dot::after { content: ""; width: 100%; height: 100%; background: #10b981; border-radius: 50%; position: absolute; animation: pulse-green 2s infinite; }
-        @keyframes pulse-green { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2.8); opacity: 0; } }
-
-        /* Video Wrapper */
         .video-wrapper { 
             position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; 
             max-width: 850px; margin: 20px auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 6px; background: #000;
@@ -41,59 +26,46 @@
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
         .esconder { display: none !important; }
-
-        /* ESTILO DA NOTIFICAÇÃO DE COMPRA (O QUE VOCÊ PEDIU) */
+        
+        /* NOTIFICAÇÃO SOCIAL PROOF */
         .cf-viewer-wrapper {
-            background-color: #fffeec; 
-            border: 1px solid #e7e4b1; 
-            padding: 15px 20px;
-            border-radius: 6px; 
-            display: inline-block; 
-            margin: 20px 0 10px; 
-            font-size: 16px; 
-            font-weight: 700; 
-            color: #444;
-            width: 100%;
-            max-width: 580px;
+            background-color: #fffeec; border: 1px solid #e7e4b1; padding: 12px 20px;
+            border-radius: 6px; display: inline-block; margin: 15px 0 5px; font-size: 16px; 
+            font-weight: 700; color: #444; width: 100%; max-width: 580px;
         }
-
-        /* Animação Shaking (Tremidinha) */
         .shaking { animation: shake-box 0.8s infinite ease-in-out; }
         @keyframes shake-box {
-            0% { transform: translateX(0); }
-            20% { transform: translateX(-3px); }
-            40% { transform: translateX(3px); }
-            60% { transform: translateX(-3px); }
-            80% { transform: translateX(3px); }
-            100% { transform: translateX(0); }
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
         }
 
-        /* Botão */
+        /* BOTÃO */
         .elButton {
             display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100;
             color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif;
             font-size: 38px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px;
-            box-shadow: 0 12px 25px rgba(235, 193, 0, 0.3); transition: all 0.2s; margin-top: 10px;
+            box-shadow: 0 12px 25px rgba(235, 193, 0, 0.2); margin-top: 10px;
             text-transform: uppercase; cursor: pointer;
         }
-        .elButton:hover { transform: scale(1.03); }
 
-        .dr-grant-note { 
-            background: #fffef2; border: 2px dashed #d4d0a5; padding: 35px; 
-            border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left;
+        /* LINKS AZUIS EMBAIXO DO BOTÃO */
+        .links-container { margin: 15px auto 30px; max-width: 580px; }
+        .blue-link {
+            display: block;
+            color: #0000ee;
+            text-decoration: underline;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: 0.2s;
         }
+        .blue-link:hover { color: #ff0000; }
 
-        /* Modal de Saída */
+        .dr-grant-note { background: #fffef2; border: 2px dashed #d4d0a5; padding: 35px; border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left; }
         .modal-exit { display: none; position: fixed; z-index: 999999; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); }
         .modal-content { background: white; margin: 5% auto; padding: 45px 30px; width: 90%; max-width: 600px; border-radius: 20px; border: 8px solid #0d0f61; position: relative; }
-
-        footer { border-top: 1px solid #f0f0f0; padding: 60px 0; text-align: center; font-size: 13px; color: #999; }
-        
-        @media (max-width: 770px) {
-            h1.elHeadline { font-size: 28px; }
-            .elButton { font-size: 24px; padding: 18px 20px; }
-            .cf-viewer-wrapper { font-size: 14px; padding: 10px; }
-        }
     </style>
 </head>
 
@@ -101,96 +73,70 @@
 
     <div id="exitModal" class="modal-exit">
         <div class="modal-content">
-            <span style="position:absolute; right:15px; top:10px; font-size:35px; color:#ccc; cursor:pointer;" onclick="$('#exitModal').hide()">&times;</span>
-            <h1 style="color:#0d0f61; font-size:30px; font-family:'Lato';">WAIT!</h1>
-            <p style="color:red; font-weight:800; font-size:20px; margin: 15px 0; text-transform:uppercase;">In Just 1:45... I'll Reveal My 7-Second Ear Trick That Silences Tinnitus Fast!</p>
-            <div style="display:flex; align-items:center; gap:20px; text-align:left; background:#f9f9f9; padding:20px; border-radius:15px; margin-bottom: 20px;">
-                <img src="images/687464baa74f39b47aca7abf1a71422d.png" style="width:130px; border-radius:12px;">
-                <p style="font-size:16px;">"It's a simple 7-second trick you can do at home. Believe me, you don't want to miss this."</p>
-            </div>
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="font-size:20px; margin:0;">Keep Watching >></a>
+            <span style="position:absolute; right:15px; top:10px; font-size:35px; cursor:pointer;" onclick="$('#exitModal').hide()">&times;</span>
+            <h1 style="color:#0d0f61; font-size:30px;">WAIT!</h1>
+            <p style="color:red; font-weight:800; font-size:20px; margin: 15px 0;">IN JUST 1:45... I'LL REVEAL MY 7-SECOND EAR TRICK!</p>
+            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="font-size:20px;">Keep Watching >></a>
         </div>
     </div>
 
     <div class="container">
-        <div class="header">
-            <h1 class="elHeadline"><b>The Greatest Enemy of Tinnitus?</b><br>This 5-Minute Evening Routine Stops the Ear Ringing</h1>
-            <div class="viewer-widget">
-                <div class="pulse-dot"></div>
-                <span><span id="vc">742</span> people from <span style="color:#fbbf24; font-weight:800;">Facebook</span> are watching</span>
-            </div>
-        </div>
+        <h1 class="elHeadline"><b>The Greatest Enemy of Tinnitus?</b><br>This 5-Minute Evening Routine Stops the Ear Ringing</h1>
 
         <div class="video-wrapper">
-            <iframe id="bunny-video" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true" allow="autoplay;fullscreen" allowfullscreen></iframe>
+            <iframe id="bunny-video" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true" allowfullscreen></iframe>
         </div>
 
         <div id="offer" class="esconder">
             
-            <div class="cf-viewer-wrapper id-6Z-Xnodba-10 shaking" id="cf-wrapper-box">
-                <span class="cf-viewer-text id-6Z-Xnodba-11">
-                    <span id="cf-viewer-count" class="id-6Z-Xnodba-12">22</span> Others Are Purchasing The DaVinci Frequency Right Now 
-                </span>
+            <div class="cf-viewer-wrapper shaking">
+                <span><span id="cf-viewer-count">22</span> Others Are Purchasing The DaVinci Frequency Right Now</span>
             </div>
 
             <br>
             <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">ORDER NOW</a>
             
+            <div class="links-container">
+                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link">
+                    YES! I Want To Stop My Ringing Ears Forever. (Add This To My Cart)
+                </a>
+                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link" style="font-size: 16px; opacity: 0.9;">
+                    ​I Deserve To Enjoy My Golden Years In Silence.
+                </a>
+            </div>
+
             <div class="dr-grant-note">
-                <p style="font-family:'Inter'; font-size:19px; font-style:italic; line-height:1.6;">
-                    <b style="color:red; font-style:normal; font-size:22px;">A Personal Note From Dr. Grant:</b><br><br>
-                    "If you are over 60 and have silently resigned yourself to the ringing, I beg you: <u style="color:red; font-weight:700;">never give up on yourself.</u>"
+                <p style="font-family:'Inter'; font-size:19px; font-style:italic; line-height: 1.6;">
+                    <b style="color:red; font-style:normal;">A Personal Note From Dr. Grant:</b><br><br>
+                    "If you are over 60 and have silently resigned yourself to the ringing, I beg you: <u style="color:red;">never give up on yourself.</u> Please, just give this an honest try for a few days; words cannot describe this, you simply have to experience it."
                 </p>
                 <img src="images/0daec2d6d25deec77370fa9e33a899a3.png" style="margin-top:30px; width:100%; border-radius:10px;">
             </div>
 
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="margin-top: 30px;">YES! I WANT SILENCE</a>
-            
-            <div style="margin: 50px 0;">
-                <img src="images/fc00db42cd71a4a2d6da13f0aba6359d.png" style="max-width:340px;">
-            </div>
+            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">YES! I WANT SILENCE</a>
         </div>
-
-        <footer>
-            <p>All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
-            <p style="margin:15px 0;">Support: support@tinnituswave.com</p>
-        </footer>
     </div>
 
     <script>
-        // CONFIGURAÇÃO DO TEMPO DE TESTE (5 SEGUNDOS)
-        var pitchTime = 5; 
+        var pitchTime = 5; // Teste de 5 segundos
         var displayed = false;
 
         function showOffer() {
             if (!displayed) {
                 displayed = true;
-                $('#offer').removeClass('esconder').hide().fadeIn(1500);
+                $('#offer').removeClass('esconder').hide().fadeIn(1000);
             }
         }
 
-        // Timer de Backup
         setTimeout(showOffer, pitchTime * 1000);
 
-        // Exit Intent Pop-up
-        var popupReady = false;
         $(document).on('mouseleave', function(e) {
-            if (e.clientY < 20 && !popupReady) {
-                popupReady = true;
-                $('#exitModal').fadeIn(300);
-            }
+            if (e.clientY < 20) $('#exitModal').fadeIn(300);
         });
 
-        // Simulação de visualizações (Número de cima)
-        setInterval(function() {
-            var n = parseInt($('#vc').text()) + (Math.floor(Math.random() * 5) - 2);
-            $('#vc').text(n > 700 ? n : 715);
-        }, 3000);
-
-        // Simulação de compradores (Número da notificação amarela)
         setInterval(function() {
             var n = parseInt($('#cf-viewer-count').text()) + (Math.floor(Math.random() * 3) - 1);
-            $('#cf-viewer-count').text(n > 10 ? n : 15);
+            $('#cf-viewer-count').text(n > 15 ? n : 20);
         }, 5000);
     </script>
 </body>
