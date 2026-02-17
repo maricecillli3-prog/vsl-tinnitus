@@ -15,7 +15,7 @@
         body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; padding: 0 10px; margin: 0 auto; max-width: 1000px; text-align: center; }
         
-        /* PRELOADER */
+        /* PRELOADER ESTILO BARRA DE PROGRESSO */
         #preloader { position: fixed; inset: 0; background: #fff; z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .progress-container { width: 250px; height: 10px; background: #f0f0f0; border-radius: 10px; margin-top: 15px; }
         .progress-bar { width: 0%; height: 100%; background: #ff0000; transition: width 0.1s; }
@@ -23,30 +23,57 @@
         h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 32px; line-height: 1.1; margin-top: 25px; }
         @media (min-width: 768px) { h1.elHeadline { font-size: 44px; } }
 
-        /* VSL QUADRADA */
-        .video-container-vsl { position: relative; max-width: 550px; margin: 25px auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; background: #000; cursor: pointer; }
-        .video-wrapper { position: relative; padding-bottom: 100%; height: 0; }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; display: none; }
+        /* VSL QUADRADA (1:1) - IGUAL AO CONCORRENTE */
+        .video-container-vsl { 
+            position: relative; 
+            max-width: 550px; 
+            margin: 25px auto; 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            background: #000; 
+        }
+        .video-wrapper { 
+            position: relative; 
+            padding-bottom: 100%; /* Proporção 1:1 */
+            height: 0; 
+        }
 
-        /* TELA DE COBERTURA (SPLASH) */
-        #video-cover { position: absolute; inset: 0; z-index: 50; background: #000 url('images/thumbnail.jpg') center/cover no-repeat; display: flex; align-items: center; justify-content: center; }
-        .fake-play-btn { background: #ff0000; color: #fff; padding: 20px 35px; border-radius: 50px; font-weight: 800; font-size: 20px; animation: pulse 1.5s infinite; text-transform: uppercase; }
-        
-        /* BLINDAGEM PÓS-PLAY */
-        #video-shield { position: absolute; inset: 0; z-index: 60; background: rgba(0,0,0,0); display: none; }
+        /* BLINDAGEM ESTILO VTURB (Impede qualquer interação) */
+        .video-wrapper iframe { 
+            position: absolute; 
+            top: 0; left: 0; width: 100%; height: 100%; 
+            border: 0; 
+            pointer-events: none; /* O segredo do concorrente */
+        }
 
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        /* CAMADA DE INTERAÇÃO INICIAL */
+        #unmute-overlay { 
+            position: absolute; 
+            inset: 0; 
+            z-index: 100; 
+            background: rgba(0,0,0,0.6); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+        }
+        .unmute-btn { background: #ff0000; color: #fff; padding: 18px 30px; border-radius: 50px; font-weight: 800; font-size: 18px; animation: pulse 1.5s infinite; text-transform: uppercase; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
         .esconder { display: none !important; }
         
         .cf-viewer-wrapper { background-color: #fffeec; border: 1px solid #e7e4b1; padding: 15px; border-radius: 6px; display: inline-block; margin: 20px 0 5px; font-size: 16px; font-weight: 700; color: #444; width: 100%; max-width: 580px; }
         .shaking { animation: shake-box 0.8s infinite ease-in-out; }
+        @keyframes shake-box { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
 
         .elButton { display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px; margin-top: 10px; text-transform: uppercase; }
         .blue-link { display: block; color: #0000ee; text-decoration: underline; font-size: 17px; font-weight: 600; margin-top: 12px; cursor: pointer; }
 
+        /* CARTA DO DOUTOR (MELHORADA) */
         .dr-grant-note { background: #fffef2; border: 2px dashed #d4d0a5; padding: 30px; border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left; }
-        .dr-grant-note p { font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.6; color: #333; }
+        .dr-grant-note p { font-family: 'Inter', sans-serif; font-size: 19px; line-height: 1.6; color: #333; }
 
         footer { border-top: 1px solid #f0f0f0; padding: 60px 0; color: #999; font-size: 13px; }
     </style>
@@ -55,25 +82,27 @@
 <body>
 
     <div id="preloader">
+        <p style="font-weight:700; color:#0d0f61;">LOADING VIDEO...</p>
         <div class="progress-container"><div class="progress-bar" id="bar"></div></div>
     </div>
 
     <div class="container">
         <h1 class="elHeadline"><b>The Greatest Enemy of Tinnitus?</b><br>This 5-Minute Evening Routine Stops the Ear Ringing</h1>
 
-        <div class="video-container-vsl" onclick="playVslNow()">
-            <div id="video-shield"></div>
-
-            <div id="video-cover">
-                <div class="fake-play-btn">🔊 CLICK TO WATCH NOW</div>
+        <div class="video-container-vsl">
+            <div id="unmute-overlay" onclick="startVslWithSound()">
+                <div style="font-size: 40px; margin-bottom: 10px;">🔊</div>
+                <div class="unmute-btn">CLICK TO ACTIVATE SOUND</div>
             </div>
 
             <div class="video-wrapper">
                 <iframe 
-                    id="vsl-video" 
-                    src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=false&muted=false&controls=false&playsinline=1" 
+                    id="vsl-iframe" 
+                    src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=true&controls=false&playsinline=1" 
                     allow="autoplay;fullscreen" 
-                    allowfullscreen>
+                    allowfullscreen 
+                    playsinline 
+                    webkit-playsinline>
                 </iframe>
             </div>
         </div>
@@ -87,6 +116,7 @@
             
             <div class="links-container">
                 <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link">YES! I Want To Stop My Ringing Ears Forever. (Add This To My Cart)</a>
+                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link" style="font-size: 15px; opacity: 0.8;">​I Deserve To Enjoy My Golden Years In Silence.</a>
             </div>
 
             <div class="dr-grant-note">
@@ -94,7 +124,7 @@
                     <b style="color:red; font-size:22px;">A Personal Note From Dr. Grant:</b><br><br>
                     "If you are over 60 and have silently resigned yourself to the ringing, I beg you: <b style="color:red; text-decoration: underline;">never give up on yourself.</b> Please, just give this an honest try for a few days; words cannot describe this, you simply have to experience it."
                 </p>
-                <img src="images/banner1.svg" style="margin-top:25px; width:100%; border-radius:10px;">
+                <img src="images/banner1.svg" style="margin-top:30px; width:100%; border-radius:10px;">
             </div>
 
             <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">YES! I WANT SILENCE</a>
@@ -111,27 +141,17 @@
         var width = 0;
         var interval = setInterval(function() {
             if (width >= 100) { clearInterval(interval); $('#preloader').fadeOut(200); }
-            else { width += Math.random() * 50; $('#bar').css('width', width + '%'); }
+            else { width += Math.random() * 45; $('#bar').css('width', width + '%'); }
         }, 100);
 
-        // A MÁGICA PARA MOBILE
-        function playVslNow() {
-            var iframe = document.getElementById('vsl-video');
-            var cover = document.getElementById('video-cover');
-            var shield = document.getElementById('video-shield');
-            
-            // 1. Mostra o iframe e esconde a capa
-            iframe.style.display = "block";
-            cover.style.display = "none";
-            
-            // 2. Dá o play forçado (recarregando o SRC com autoplay=true)
+        // ATIVAÇÃO DO SOM (Gatilho para Mobile)
+        function startVslWithSound() {
+            var iframe = document.getElementById('vsl-iframe');
             var currentSrc = iframe.src;
-            iframe.src = currentSrc.replace("autoplay=false", "autoplay=true");
             
-            // 3. Ativa a blindagem para ninguém pausar
-            setTimeout(function(){
-                shield.style.display = "block";
-            }, 1000);
+            // Recarrega sem o muted para liberar o som. O clique do lead valida a ação.
+            iframe.src = currentSrc.replace("&muted=true", "");
+            $('#unmute-overlay').fadeOut(300);
         }
 
         var pitchTime = 5; 
@@ -142,6 +162,11 @@
         }
 
         setTimeout(showOffer, pitchTime * 1000);
+
+        setInterval(function() {
+            var n = parseInt($('#cf-viewer-count').text()) + (Math.floor(Math.random() * 3) - 1);
+            $('#cf-viewer-count').text(n > 15 ? n : 20);
+        }, 5000);
     </script>
 </body>
 </html>
