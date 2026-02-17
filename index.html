@@ -20,7 +20,7 @@
         .progress-container { width: 250px; height: 10px; background: #f0f0f0; border-radius: 10px; margin-top: 15px; }
         .progress-bar { width: 0%; height: 100%; background: #ff0000; transition: width 0.1s; }
 
-        h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 32px; line-height: 1.1; margin-top: 25px; }
+        h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 30px; line-height: 1.1; margin-top: 25px; }
         @media (min-width: 768px) { h1.elHeadline { font-size: 44px; } }
 
         /* VSL QUADRADA */
@@ -31,25 +31,36 @@
             box-shadow: 0 25px 60px rgba(0,0,0,0.3); 
             border-radius: 8px; 
             overflow: hidden; 
-            background: #000; 
+            background: #000;
+            -webkit-mask-image: -webkit-radial-gradient(white, black); /* Fix para bordas arredondadas no Safari */
         }
         .video-wrapper { position: relative; padding-bottom: 100%; height: 0; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* BLINDAGEM (Invisível, ativa após 30s) */
+        /* PELÍCULA DE VIDRO (BLINDAGEM TOTAL) */
         #video-shield { 
             position: absolute; 
-            inset: 0; 
-            z-index: 900; 
-            background: rgba(0,0,0,0); 
-            display: none; /* Ativado via JS */
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            z-index: 999; /* Fica na frente de tudo */
+            background: rgba(0,0,0,0); /* Totalmente invisível */
+            cursor: default;
+            display: none; /* Ativa via JS */
+            pointer-events: auto !important; /* Força o bloqueio de toques */
         }
 
         /* BOTÃO DE SOM (UNMUTE) */
         #unmute-overlay { 
-            position: absolute; inset: 0; z-index: 1000; 
+            position: absolute; 
+            inset: 0; 
+            z-index: 1000; /* Acima da película inicial */
             background: rgba(0,0,0,0.6); 
-            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
             cursor: pointer; 
         }
         .unmute-btn { background: #ff0000; color: #fff; padding: 18px 30px; border-radius: 50px; font-weight: 800; font-size: 18px; animation: pulse 1.5s infinite; text-transform: uppercase; }
@@ -57,23 +68,13 @@
 
         .esconder { display: none !important; }
         
-        /* PROVA SOCIAL */
-        .cf-viewer-wrapper { 
-            background-color: #fffeec; border: 1px solid #e7e4b1; padding: 15px; 
-            border-radius: 6px; display: inline-block; margin: 20px 0 5px; 
-            font-size: 16px; font-weight: 700; color: #444; width: 100%; max-width: 580px; 
-        }
+        /* BOX PROVA SOCIAL */
+        .cf-viewer-wrapper { background-color: #fffeec; border: 1px solid #e7e4b1; padding: 15px; border-radius: 6px; display: inline-block; margin: 20px 0 5px; font-size: 16px; font-weight: 700; color: #444; width: 100%; max-width: 580px; }
         .shaking { animation: shake-box 0.8s infinite ease-in-out; }
         @keyframes shake-box { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
 
-        /* BOTÕES */
-        .elButton { 
-            display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; 
-            color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; 
-            font-size: 32px; font-weight: 700; text-decoration: none; width: 100%; 
-            max-width: 580px; margin-top: 10px; text-transform: uppercase; 
-        }
-
+        /* BOTÕES DE COMPRA */
+        .elButton { display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px; margin-top: 10px; text-transform: uppercase; }
         .blue-link { display: block; color: #0000ee; text-decoration: underline; font-size: 17px; font-weight: 600; margin-top: 12px; cursor: pointer; }
 
         /* CARTA DO DOUTOR */
@@ -97,9 +98,9 @@
         <div class="video-container-vsl">
             <div id="video-shield"></div>
 
-            <div id="unmute-overlay" onclick="handleStartWithTimer()">
+            <div id="unmute-overlay" onclick="activateGlassShield()">
                 <div style="font-size: 40px; margin-bottom: 10px;">🔊</div>
-                <div class="unmute-btn">CLICK TO WATCH WITH SOUND</div>
+                <div class="unmute-btn">CLICK TO ACTIVATE SOUND</div>
             </div>
 
             <div class="video-wrapper">
@@ -117,7 +118,7 @@
         <div id="offer" class="esconder">
             
             <div class="cf-viewer-wrapper shaking">
-                <span><span id="cf-viewer-count">22</span> Others Are Purchasing The DaVinci Frequency Right Now</span>
+                <span><span id="cf-viewer-count">22</span> Others Are Purchasing Right Now</span>
             </div>
 
             <br>
@@ -156,21 +157,23 @@
             else { width += Math.random() * 40; $('#bar').css('width', width + '%'); }
         }, 100);
 
-        // FUNÇÃO QUE CONTROLA O INÍCIO E O TIMER DE BLINDAGEM
-        function handleStartWithTimer() {
+        // FUNÇÃO QUE ATIVA A PELÍCULA E O SOM
+        function activateGlassShield() {
             var iframe = document.getElementById('vsl-iframe');
             var src = iframe.src;
             
-            // 1. Inicia o vídeo com som
+            // 1. Libera o áudio
             iframe.src = src.replace("&muted=true", "");
+            
+            // 2. Remove o botão
             $('#unmute-overlay').fadeOut(200);
 
-            // 2. CONFIGURA O TIMER DE 30 SEGUNDOS PARA A BLINDAGEM
-            console.log("Timer de blindagem iniciado: 30 segundos.");
-            setTimeout(function(){
-                $('#video-shield').show();
-                console.log("Vídeo blindado com sucesso.");
-            }, 30000); // 30000ms = 30 segundos
+            // 3. ATIVA A PELÍCULA DE VIDRO IMEDIATAMENTE
+            // E tira a capacidade do iframe de receber qualquer evento de ponteiro
+            $('#video-shield').show();
+            $('#vsl-iframe').css('pointer-events', 'none');
+            
+            console.log("Película de vidro ativada. Toques bloqueados.");
         }
 
         var pitchTime = 5; 
