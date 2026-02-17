@@ -23,7 +23,7 @@
         h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 32px; line-height: 1.1; margin-top: 25px; }
         @media (min-width: 768px) { h1.elHeadline { font-size: 44px; } }
 
-        /* VSL QUADRADA ESTILO VTURB */
+        /* VSL QUADRADA */
         .video-container-vsl { 
             position: relative; 
             max-width: 550px; 
@@ -34,17 +34,18 @@
             background: #000; 
         }
         .video-wrapper { position: relative; padding-bottom: 100%; height: 0; }
-        
-        /* O iframe recebe pointer-events:none para blindar cliques nativos */
-        .video-wrapper iframe { 
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-            border: 0; pointer-events: none !important; 
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+        /* BLINDAGEM (Invisível, ativa após 30s) */
+        #video-shield { 
+            position: absolute; 
+            inset: 0; 
+            z-index: 900; 
+            background: rgba(0,0,0,0); 
+            display: none; /* Ativado via JS */
         }
 
-        /* Camada de Blindagem Invisível (Z-Index alto para travar tudo) */
-        #video-shield { position: absolute; inset: 0; z-index: 900; background: rgba(0,0,0,0); display: none; }
-
-        /* BOTÃO DE INTERAÇÃO INICIAL (Obrigatório para som no mobile) */
+        /* BOTÃO DE SOM (UNMUTE) */
         #unmute-overlay { 
             position: absolute; inset: 0; z-index: 1000; 
             background: rgba(0,0,0,0.6); 
@@ -56,7 +57,7 @@
 
         .esconder { display: none !important; }
         
-        /* PROVA SOCIAL (Recuperada) */
+        /* PROVA SOCIAL */
         .cf-viewer-wrapper { 
             background-color: #fffeec; border: 1px solid #e7e4b1; padding: 15px; 
             border-radius: 6px; display: inline-block; margin: 20px 0 5px; 
@@ -65,7 +66,7 @@
         .shaking { animation: shake-box 0.8s infinite ease-in-out; }
         @keyframes shake-box { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
 
-        /* BOTÕES DE COMPRA */
+        /* BOTÕES */
         .elButton { 
             display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; 
             color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; 
@@ -86,7 +87,7 @@
 <body>
 
     <div id="preloader">
-        <p style="font-weight:700; color:#0d0f61; font-family:'Lato';">LOADING VIDEO...</p>
+        <p style="font-weight:700; color:#0d0f61;">LOADING SECURE PLAYER...</p>
         <div class="progress-container"><div class="progress-bar" id="bar"></div></div>
     </div>
 
@@ -96,9 +97,9 @@
         <div class="video-container-vsl">
             <div id="video-shield"></div>
 
-            <div id="unmute-overlay" onclick="enableAudioStyleVturb()">
+            <div id="unmute-overlay" onclick="handleStartWithTimer()">
                 <div style="font-size: 40px; margin-bottom: 10px;">🔊</div>
-                <div class="unmute-btn">CLICK TO ACTIVATE SOUND</div>
+                <div class="unmute-btn">CLICK TO WATCH WITH SOUND</div>
             </div>
 
             <div class="video-wrapper">
@@ -123,12 +124,7 @@
             <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">ORDER NOW</a>
             
             <div class="links-container">
-                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link">
-                    YES! I Want To Stop My Ringing Ears Forever. (Add This To My Cart)
-                </a>
-                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link" style="font-size: 15px; opacity: 0.8;">
-                    ​I Deserve To Enjoy My Golden Years In Silence.
-                </a>
+                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link">YES! I Want To Stop My Ringing Ears Forever. (Add This To My Cart)</a>
             </div>
 
             <div class="dr-grant-note">
@@ -160,34 +156,31 @@
             else { width += Math.random() * 40; $('#bar').css('width', width + '%'); }
         }, 100);
 
-        // FUNÇÃO DE ATIVAÇÃO IGUAL AO VTURB
-        function enableAudioStyleVturb() {
+        // FUNÇÃO QUE CONTROLA O INÍCIO E O TIMER DE BLINDAGEM
+        function handleStartWithTimer() {
             var iframe = document.getElementById('vsl-iframe');
             var src = iframe.src;
             
-            // Recarrega o vídeo sem o mudo para liberar o áudio
+            // 1. Inicia o vídeo com som
             iframe.src = src.replace("&muted=true", "");
-            
             $('#unmute-overlay').fadeOut(200);
 
-            // Ativa a blindagem total 1.5 segundos depois para garantir o play
+            // 2. CONFIGURA O TIMER DE 30 SEGUNDOS PARA A BLINDAGEM
+            console.log("Timer de blindagem iniciado: 30 segundos.");
             setTimeout(function(){
                 $('#video-shield').show();
-            }, 1500);
+                console.log("Vídeo blindado com sucesso.");
+            }, 30000); // 30000ms = 30 segundos
         }
 
         var pitchTime = 5; 
         var displayed = false;
 
         function showOffer() {
-            if (!displayed) {
-                displayed = true;
-                $('#offer').removeClass('esconder').hide().fadeIn(1000);
-            }
+            if (!displayed) { displayed = true; $('#offer').removeClass('esconder').hide().fadeIn(1000); }
         }
         setTimeout(showOffer, pitchTime * 1000);
 
-        // Contador de Compradores
         setInterval(function() {
             var n = parseInt($('#cf-viewer-count').text()) + (Math.floor(Math.random() * 3) - 1);
             $('#cf-viewer-count').text(n > 15 ? n : 20);
