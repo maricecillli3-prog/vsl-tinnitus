@@ -3,187 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex">
-    
     <link rel="icon" type="image/x-icon" href="images/33ab840a118660e348a6a49784dd0b70.png">
-    <title>(1) Unread Message</title>
-
-    <link href="https://fonts.googleapis.com/css?family=Lato:900|Open+Sans:400,600,700|Oswald:700|Inter:500" rel="stylesheet">
-    
+    <title>TESTE DE EXIBIÇÃO</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:900|Open+Sans:400,600,700|Oswald:700" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <style>
-        /* CSS REPLICADO E OTIMIZADO */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; -webkit-font-smoothing: antialiased; }
-        .container { width: 100%; padding: 0 10px; margin: 0 auto; max-width: 1000px; text-align: center; }
+        body { font-family: 'Open Sans', sans-serif; text-align: center; }
+        .container { width: 100%; max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .video-wrapper { background: #000; padding-bottom: 56.25%; position: relative; height: 0; margin-bottom: 20px; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         
-        /* Headline */
-        .header { text-align: center; padding: 30px 0 10px; }
-        h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 44px; line-height: 1.1; letter-spacing: -1px; }
-        h1.elHeadline b { color: #ff0000; }
-
-        /* Widget Facebook */
-        .viewer-widget {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-            color: white; padding: 8px 25px; border-radius: 50px;
-            display: inline-flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600;
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.35); margin: 15px 0;
-        }
-        .pulse-dot { width: 10px; height: 10px; background: #10b981; border-radius: 50%; position: relative; }
-        .pulse-dot::after { content: ""; width: 100%; height: 100%; background: #10b981; border-radius: 50%; position: absolute; animation: pulse-green 2s infinite; }
-        @keyframes pulse-green { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2.8); opacity: 0; } }
-
-        /* Player Wrapper */
-        .video-wrapper { 
-            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; 
-            max-width: 850px; margin: 20px auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 6px; background: #000;
-        }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-
-        /* Classe de controle - Display None com !important para garantir ocultação inicial */
+        /* ESTA É A CLASSE QUE ESCONDE */
         .esconder { display: none !important; }
-        
-        /* Botão de Compra */
+
+        /* Borda apenas para sabermos onde a oferta começa */
+        #offer { border: 3px solid red; padding: 20px; margin-top: 20px; }
+
         .elButton {
-            display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100;
-            color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif;
-            font-size: 38px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px;
-            box-shadow: 0 12px 25px rgba(235, 193, 0, 0.3); transition: all 0.2s; margin-top: 30px;
-            text-transform: uppercase; cursor: pointer;
-        }
-        .elButton:hover { transform: scale(1.03); background: #fff033; }
-
-        .payment-methods-container { margin: 10px auto 35px; max-width: 450px; }
-        .payment-methods-img { width: 100%; height: auto; display: block; }
-
-        .dr-grant-note { 
-            background: #fffef2; border: 2px dashed #d4d0a5; padding: 35px; 
-            border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left;
-        }
-
-        /* MODAL DE SAÍDA */
-        .modal-exit { 
-            display: none; position: fixed; z-index: 999999; inset: 0; 
-            background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); 
-        }
-        .modal-content { 
-            background: white; margin: 5% auto; padding: 45px 30px; width: 90%; 
-            max-width: 600px; border-radius: 20px; border: 8px solid #0d0f61; position: relative; 
-            text-align: center; font-family: 'Open Sans', sans-serif;
-        }
-
-        footer { border-top: 1px solid #f0f0f0; padding: 60px 0; text-align: center; font-size: 13px; color: #999; }
-
-        @media (max-width: 770px) {
-            h1.elHeadline { font-size: 28px; }
-            .elButton { font-size: 24px; padding: 18px 20px; }
+            display: inline-block; background: #ffea00; color: #0d0f61; padding: 20px;
+            font-size: 30px; font-weight: 700; text-decoration: none; border-radius: 10px;
         }
     </style>
 </head>
-
 <body>
 
-    <div id="exitModal" class="modal-exit">
-        <div class="modal-content">
-            <span style="position:absolute; right:15px; top:10px; font-size:35px; color:#ccc; cursor:pointer;" onclick="$('#exitModal').hide()">&times;</span>
-            <h1 style="color:#0d0f61; font-size:30px; font-family:'Lato';">WAIT!</h1>
-            <p style="color:red; font-weight:800; font-size:20px; margin: 15px 0; text-transform:uppercase;">In Just 1:45... I'll Reveal My 7-Second Ear Trick That Silences Tinnitus Fast!</p>
-            <div style="display:flex; align-items:center; gap:20px; text-align:left; background:#f9f9f9; padding:20px; border-radius:15px; margin-bottom: 20px;">
-                <img src="images/687464baa74f39b47aca7abf1a71422d.png" style="width:130px; border-radius:12px;">
-                <p style="font-size:16px;">"It's a simple 7-second trick you can do at home. Believe me, you don't want to miss this."</p>
-            </div>
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="font-size:20px; margin:0;">Keep Watching >></a>
-        </div>
-    </div>
-
     <div class="container">
-        <div class="header">
-            <h1 class="elHeadline"><b>The Greatest Enemy of Tinnitus?</b><br>This 5-Minute Evening Routine Stops the Ear Ringing</h1>
-            <div class="viewer-widget">
-                <div class="pulse-dot"></div>
-                <span><span id="vc">742</span> people from <span style="color:#fbbf24; font-weight:800;">Facebook</span> are watching</span>
-            </div>
-        </div>
-
+        <h1>Página de Teste - Aguarde 5 segundos</h1>
+        
         <div class="video-wrapper">
-            <iframe id="bunny-video" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true" allow="autoplay;fullscreen" allowfullscreen></iframe>
+            <iframe src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true" allowfullscreen></iframe>
         </div>
 
         <div id="offer" class="esconder">
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">ORDER NOW</a>
-            
-            <div class="payment-methods-container">
-                <img src="images/metodos-pagamento.png" class="payment-methods-img">
-            </div>
-
-            <div class="dr-grant-note">
-                <p style="font-family:'Inter'; font-size:19px; font-style:italic; line-height:1.6;">
-                    <b style="color:red; font-style:normal; font-size:22px;">A Personal Note From Dr. Grant:</b><br><br>
-                    "If you are over 60 and have silently resigned yourself to the ringing, I beg you: <u style="color:red; font-weight:700;">never give up on yourself.</u>"
-                </p>
-                <img src="images/0daec2d6d25deec77370fa9e33a899a3.png" style="margin-top:30px; width:100%; border-radius:10px;">
-            </div>
-
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="margin-top: 30px;">YES! I WANT SILENCE</a>
-            
-            <div style="margin: 50px 0;">
-                <img src="images/fc00db42cd71a4a2d6da13f0aba6359d.png" style="max-width:340px;">
-            </div>
+            <h2 style="color: red;">A OFERTA APARECEU!</h2>
+            <a href="#" class="elButton">BOTÃO DE TESTE</a>
+            <br><br>
+            <img src="images/metodos-pagamento.png" style="width: 100%; max-width: 400px;" alt="Imagem de Pagamento">
         </div>
-
-        <footer>
-            <p>All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
-            <p style="margin:15px 0;">Support: support@tinnituswave.com</p>
-        </footer>
     </div>
 
     <script>
-        // CONFIGURAÇÃO DO TEMPO DE ATRASO
-        var pitchTime = 1367; // 22:47 minutos
-        var jaExibido = false;
-
-        function revelarOferta() {
-            if (!jaExibido) {
-                jaExibido = true;
-                $('#offer').removeClass('esconder').hide().fadeIn(1500);
-                console.log("Oferta revelada com sucesso.");
-            }
-        }
-
-        // 1. Escuta a Bunny API (Funciona se "Enable API" estiver ON na Bunny)
-        window.addEventListener('message', function(e) {
-            if (e.data && e.data.event === 'timeupdate') {
-                if (e.data.value >= pitchTime) {
-                    revelarOferta();
-                }
-            }
-        });
-
-        // 2. Backup de Segurança: Timer inicia quando o vídeo é iniciado
-        window.addEventListener('message', function(e) {
-            if (e.data && e.data.event === 'play') {
-                console.log("Vídeo iniciado. Timer de backup rodando...");
-                setTimeout(revelarOferta, pitchTime * 1000);
-            }
-        });
-
-        // 3. Pop-up de Saída (Detecta mouse saindo pelo topo)
-        var popupStatus = false;
-        $(document).on('mouseleave', function(e) {
-            if (e.clientY < 20 && !popupStatus) {
-                popupStatus = true;
-                $('#exitModal').fadeIn(300);
-            }
-        });
-
-        // Simulação de visualizações em tempo real
-        setInterval(function() {
-            var atual = parseInt($('#vc').text());
-            var variacao = Math.floor(Math.random() * 5) - 2;
-            var novo = atual + variacao;
-            $('#vc').text(novo > 700 ? novo : 715);
-        }, 3000);
+        // TESTE RÁPIDO: 5 SEGUNDOS
+        setTimeout(function() {
+            console.log("Tentando mostrar a oferta agora...");
+            $('#offer').removeClass('esconder');
+        }, 5000); // 5000ms = 5 segundos
     </script>
 </body>
 </html>
