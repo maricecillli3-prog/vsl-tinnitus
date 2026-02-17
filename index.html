@@ -13,66 +13,58 @@
 
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; padding: 0 10px; margin: 0 auto; max-width: 1000px; text-align: center; }
         
-        /* EFEITO DE BARRA DE CARREGAMENTO */
-        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fff; z-index: 1000000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .loader-text { font-weight: 700; margin-bottom: 15px; color: #0d0f61; font-size: 18px; }
-        .progress-container { width: 80%; max-width: 300px; height: 12px; background: #f0f0f0; border-radius: 10px; overflow: hidden; }
+        /* PRELOADER RÁPIDO */
+        #preloader { position: fixed; inset: 0; background: #fff; z-index: 1000000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .progress-container { width: 250px; height: 8px; background: #f0f0f0; border-radius: 10px; margin-top: 15px; }
         .progress-bar { width: 0%; height: 100%; background: #ff0000; transition: width 0.1s; }
 
-        h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 38px; line-height: 1.1; margin-top: 20px; padding: 0 5px; }
-        @media (min-width: 768px) { h1.elHeadline { font-size: 44px; margin-top: 30px; } }
+        h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 36px; line-height: 1.1; margin-top: 20px; }
+        @media (min-width: 768px) { h1.elHeadline { font-size: 44px; } }
 
-        /* VIDEO WRAPPER QUADRADO (1:1) */
-        .video-container-vsl { position: relative; max-width: 600px; margin: 20px auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; background: #000; }
+        /* VIDEO QUADRADO E BLINDADO */
+        .video-container-vsl { position: relative; max-width: 600px; margin: 25px auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; background: #000; }
         .video-wrapper { position: relative; padding-bottom: 100%; height: 0; }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background: rgba(0,0,0,0); }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; pointer-events: none; }
+
+        /* BOTÃO DE DESMUDAR (UNMUTE) */
+        #unmute-overlay { position: absolute; inset: 0; z-index: 100; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .unmute-btn { background: #ff0000; color: #fff; padding: 15px 25px; border-radius: 50px; font-weight: 700; font-size: 18px; animation: pulse-red 1.5s infinite; }
+        @keyframes pulse-red { 0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7); } 70% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(255, 0, 0, 0); } 100% { transform: scale(1); } }
 
         .esconder { display: none !important; }
         
-        /* NOTIFICAÇÃO SOCIAL PROOF */
         .cf-viewer-wrapper { background-color: #fffeec; border: 1px solid #e7e4b1; padding: 12px 20px; border-radius: 6px; display: inline-block; margin: 20px 0 5px; font-size: 16px; font-weight: 700; color: #444; width: 100%; max-width: 580px; }
         .shaking { animation: shake-box 0.8s infinite ease-in-out; }
         @keyframes shake-box { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
 
-        /* BOTÕES */
-        .elButton { display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px; box-shadow: 0 12px 25px rgba(235, 193, 0, 0.2); margin-top: 10px; text-transform: uppercase; cursor: pointer; }
-        @media (min-width: 768px) { .elButton { font-size: 38px; } }
+        .elButton { display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px; box-shadow: 0 12px 25px rgba(235, 193, 0, 0.2); margin-top: 10px; text-transform: uppercase; }
+        .blue-link { display: block; color: #0000ee; text-decoration: underline; font-size: 17px; font-weight: 600; margin-top: 12px; cursor: pointer; line-height: 1.4; }
 
-        .links-container { margin: 15px auto 30px; max-width: 580px; }
-        .blue-link { display: block; color: #0000ee; text-decoration: underline; font-size: 18px; font-weight: 600; margin-bottom: 12px; cursor: pointer; line-height: 1.4; }
+        .dr-grant-note { background: #fffef2; border: 2px dashed #d4d0a5; padding: 30px; border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left; }
+        .dr-grant-note p { font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.6; color: #333; }
 
-        /* CARTA DO DOUTOR MELHORADA */
-        .dr-grant-note { background: #fffef2; border: 2px dashed #d4d0a5; padding: 25px; border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left; }
-        .dr-grant-note p { font-family: 'Inter', sans-serif; font-size: 19px; line-height: 1.6; color: #333; }
-        @media (max-width: 768px) { .dr-grant-note { padding: 20px; } .dr-grant-note p { font-size: 17px; } }
-
-        /* MODAL DE SAÍDA */
         .modal-exit { display: none; position: fixed; z-index: 999999; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); }
         .modal-content { background: white; margin: 15% auto; padding: 30px 20px; width: 90%; max-width: 600px; border-radius: 20px; border: 8px solid #0d0f61; position: relative; }
-        @media (min-width: 768px) { .modal-content { margin: 5% auto; padding: 45px 30px; } }
 
-        footer { border-top: 1px solid #f0f0f0; padding: 60px 0; text-align: center; font-size: 13px; color: #999; }
+        footer { border-top: 1px solid #f0f0f0; padding: 60px 0; color: #999; font-size: 13px; }
     </style>
 </head>
 
 <body>
 
     <div id="preloader">
-        <p class="loader-text">Loading secure video player...</p>
-        <div class="progress-container">
-            <div class="progress-bar" id="bar"></div>
-        </div>
+        <p style="font-weight:700; color:#0d0f61;">PREPARING YOUR VIDEO...</p>
+        <div class="progress-container"><div class="progress-bar" id="bar"></div></div>
     </div>
 
     <div id="exitModal" class="modal-exit">
         <div class="modal-content">
             <span style="position:absolute; right:15px; top:10px; font-size:35px; cursor:pointer;" onclick="$('#exitModal').hide()">&times;</span>
-            <h1 style="color:#0d0f61; font-size:26px; font-family:'Lato';">WAIT!</h1>
-            <p style="color:red; font-weight:800; font-size:18px; margin: 15px 0; text-transform:uppercase;">In Just 1:45... I'll Reveal My 7-Second Ear Trick That Silences Tinnitus Fast!</p>
+            <h1 style="color:#0d0f61; font-size:26px;">WAIT!</h1>
+            <p style="color:red; font-weight:800; font-size:18px; margin: 15px 0;">IN JUST 1:45... I'LL REVEAL MY 7-SECOND EAR TRICK!</p>
             <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="font-size:20px; margin:0;">Keep Watching >></a>
         </div>
     </div>
@@ -81,14 +73,16 @@
         <h1 class="elHeadline"><b>The Greatest Enemy of Tinnitus?</b><br>This 5-Minute Evening Routine Stops the Ear Ringing</h1>
 
         <div class="video-container-vsl">
-            <div class="video-overlay"></div> 
+            <div id="unmute-overlay" onclick="unmuteVideo()">
+                <div class="unmute-btn">🔊 CLICK TO ACTIVATE SOUND</div>
+            </div>
+
             <div class="video-wrapper">
-                <iframe id="bunny-video" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=true&controls=false&preload=true" allow="autoplay;fullscreen" allowfullscreen></iframe>
+                <iframe id="bunny-video" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=true&controls=false" allow="autoplay;fullscreen" allowfullscreen></iframe>
             </div>
         </div>
 
         <div id="offer" class="esconder">
-            
             <div class="cf-viewer-wrapper shaking">
                 <span><span id="cf-viewer-count">22</span> Others Are Purchasing The DaVinci Frequency Right Now</span>
             </div>
@@ -100,68 +94,64 @@
                 <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link">
                     YES! I Want To Stop My Ringing Ears Forever. (Add This To My Cart)
                 </a>
-                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link" style="font-size: 16px; opacity: 0.9;">
+                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link" style="font-size: 15px; opacity: 0.8;">
                     ​I Deserve To Enjoy My Golden Years In Silence.
                 </a>
             </div>
 
             <div class="dr-grant-note">
                 <p>
-                    <b style="color:red; font-size:22px; font-style:normal;">A Personal Note From Dr. Grant:</b><br><br>
+                    <b style="color:red; font-size:21px;">A Personal Note From Dr. Grant:</b><br><br>
                     "If you are over 60 and have silently resigned yourself to the ringing, I beg you: <b style="color:red; text-decoration: underline;">never give up on yourself.</b> Please, just give this an honest try for a few days; words cannot describe this, you simply have to experience it."
                 </p>
-                <img src="images/banner1.svg" style="margin-top:30px; width:100%; border-radius:10px;" alt="Offer Banner">
+                <img src="images/banner1.svg" style="margin-top:25px; width:100%; border-radius:10px;">
             </div>
 
             <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">YES! I WANT SILENCE</a>
             
-            <div style="margin: 20px auto 50px; max-width: 320px;">
+            <div style="margin: 30px auto 50px; max-width: 320px;">
                 <img src="images/fc00db42cd71a4a2d6da13f0aba6359d_1.png" style="width: 100%;">
-                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link" style="margin-top: 10px; font-size: 16px;">(Add To Cart)</a>
+                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link">(Add To Cart)</a>
             </div>
         </div>
 
         <footer>
             <p>All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
-            <p style="margin:15px 0;">Support: support@tinnituswave.com</p>
         </footer>
     </div>
 
     <script>
-        // ANIMAÇÃO DA BARRA DE CARREGAMENTO
-        $(document).ready(function() {
-            var width = 0;
-            var interval = setInterval(function() {
-                if (width >= 100) {
-                    clearInterval(interval);
-                    $('#preloader').fadeOut(500);
-                } else {
-                    width += Math.random() * 15;
-                    if(width > 100) width = 100;
-                    $('#bar').css('width', width + '%');
-                }
-            }, 100);
-        });
+        // BARRA DE CARREGAMENTO
+        var width = 0;
+        var interval = setInterval(function() {
+            if (width >= 100) { clearInterval(interval); $('#preloader').fadeOut(500); }
+            else { width += Math.random() * 25; $('#bar').css('width', width + '%'); }
+        }, 120);
 
-        // CONFIGURAÇÃO DO DELAY (5 Segundos para teste)
-        var pitchTime = 5; 
+        // FUNÇÃO PARA ATIVAR SOM (MOBILE)
+        function unmuteVideo() {
+            var iframe = document.getElementById('bunny-video');
+            // Envia comando para a Bunny API desmutar
+            iframe.contentWindow.postMessage('{"event":"command","func":"unmute","args":""}', '*');
+            // Como a Bunny pode ignorar o comando direto, o truque é recarregar o SRC sem o muted
+            var currentSrc = iframe.src;
+            iframe.src = currentSrc.replace("&muted=true", "").replace("autoplay=true", "autoplay=true");
+            $('#unmute-overlay').fadeOut(300);
+        }
+
+        var pitchTime = 5; // Tempo de teste
         var displayed = false;
 
         function showOffer() {
-            if (!displayed) {
-                displayed = true;
-                $('#offer').removeClass('esconder').hide().fadeIn(1000);
-            }
+            if (!displayed) { displayed = true; $('#offer').removeClass('esconder').hide().fadeIn(1000); }
         }
 
         setTimeout(showOffer, pitchTime * 1000);
 
-        // Pop-up de Saída (Detecta topo da página)
         $(document).on('mouseleave', function(e) {
             if (e.clientY < 20) $('#exitModal').fadeIn(300);
         });
 
-        // Simulador de compradores
         setInterval(function() {
             var n = parseInt($('#cf-viewer-count').text()) + (Math.floor(Math.random() * 3) - 1);
             $('#cf-viewer-count').text(n > 15 ? n : 20);
