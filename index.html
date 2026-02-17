@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="robots" content="noindex">
     <link rel="icon" type="image/x-icon" href="images/33ab840a118660e348a6a49784dd0b70.png">
     <title>(1) Unread Message</title>
 
@@ -21,9 +20,8 @@
         .progress-bar { width: 0%; height: 100%; background: #ff0000; transition: width 0.1s; }
 
         h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 30px; line-height: 1.1; margin-top: 25px; }
-        @media (min-width: 768px) { h1.elHeadline { font-size: 44px; } }
 
-        /* VSL QUADRADA */
+        /* MOLDURA DO VÍDEO QUADRADA */
         .video-container-vsl { 
             position: relative; 
             max-width: 550px; 
@@ -32,54 +30,55 @@
             border-radius: 8px; 
             overflow: hidden; 
             background: #000;
-            -webkit-mask-image: -webkit-radial-gradient(white, black); /* Fix para bordas arredondadas no Safari */
         }
         .video-wrapper { position: relative; padding-bottom: 100%; height: 0; }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-
-        /* PELÍCULA DE VIDRO (BLINDAGEM TOTAL) */
-        #video-shield { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            z-index: 999; /* Fica na frente de tudo */
-            background: rgba(0,0,0,0); /* Totalmente invisível */
-            cursor: default;
-            display: none; /* Ativa via JS */
-            pointer-events: auto !important; /* Força o bloqueio de toques */
+        
+        /* A Capa Inicial (Thumbnail) */
+        #video-cover {
+            position: absolute;
+            inset: 0;
+            z-index: 100;
+            background: #000 url('images/thumbnail.jpg') center/cover no-repeat; /* Use uma imagem do seu vídeo aqui */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
         }
 
-        /* BOTÃO DE SOM (UNMUTE) */
-        #unmute-overlay { 
-            position: absolute; 
-            inset: 0; 
-            z-index: 1000; /* Acima da película inicial */
-            background: rgba(0,0,0,0.6); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            cursor: pointer; 
+        .play-button-vsl {
+            background: #ff0000;
+            color: #fff;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 20px;
+            animation: pulse-red 1.5s infinite;
+            text-transform: uppercase;
         }
-        .unmute-btn { background: #ff0000; color: #fff; padding: 18px 30px; border-radius: 50px; font-weight: 800; font-size: 18px; animation: pulse 1.5s infinite; text-transform: uppercase; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        @keyframes pulse-red { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        /* O vídeo em si, inicialmente sem interação */
+        #vsl-iframe {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            border: 0;
+            display: none; /* Só aparece após o clique */
+            pointer-events: none; /* Blindagem ativa desde o nascimento */
+        }
 
         .esconder { display: none !important; }
         
-        /* BOX PROVA SOCIAL */
+        /* ELEMENTOS DE CONVERSÃO */
         .cf-viewer-wrapper { background-color: #fffeec; border: 1px solid #e7e4b1; padding: 15px; border-radius: 6px; display: inline-block; margin: 20px 0 5px; font-size: 16px; font-weight: 700; color: #444; width: 100%; max-width: 580px; }
         .shaking { animation: shake-box 0.8s infinite ease-in-out; }
         @keyframes shake-box { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
 
-        /* BOTÕES DE COMPRA */
         .elButton { display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px; margin-top: 10px; text-transform: uppercase; }
-        .blue-link { display: block; color: #0000ee; text-decoration: underline; font-size: 17px; font-weight: 600; margin-top: 12px; cursor: pointer; }
 
         /* CARTA DO DOUTOR */
         .dr-grant-note { background: #fffef2; border: 2px dashed #d4d0a5; padding: 30px; border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left; }
-        .dr-grant-note p { font-family: 'Inter', sans-serif; font-size: 19px; line-height: 1.6; color: #333; }
+        .dr-grant-note p { font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.6; color: #333; }
 
         footer { border-top: 1px solid #f0f0f0; padding: 60px 0; color: #999; font-size: 13px; }
     </style>
@@ -88,7 +87,6 @@
 <body>
 
     <div id="preloader">
-        <p style="font-weight:700; color:#0d0f61;">LOADING SECURE PLAYER...</p>
         <div class="progress-container"><div class="progress-bar" id="bar"></div></div>
     </div>
 
@@ -96,38 +94,21 @@
         <h1 class="elHeadline"><b>The Greatest Enemy of Tinnitus?</b><br>This 5-Minute Evening Routine Stops the Ear Ringing</h1>
 
         <div class="video-container-vsl">
-            <div id="video-shield"></div>
-
-            <div id="unmute-overlay" onclick="activateGlassShield()">
-                <div style="font-size: 40px; margin-bottom: 10px;">🔊</div>
-                <div class="unmute-btn">CLICK TO ACTIVATE SOUND</div>
+            <div id="video-cover" onclick="injectAndPlay()">
+                <div class="play-button-vsl">🔊 CLICK TO WATCH NOW</div>
             </div>
 
-            <div class="video-wrapper">
-                <iframe 
-                    id="vsl-iframe" 
-                    src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=true&controls=false&playsinline=1" 
-                    allow="autoplay;fullscreen" 
-                    allowfullscreen 
-                    playsinline 
-                    webkit-playsinline>
-                </iframe>
-            </div>
+            <div class="video-wrapper" id="wrapper">
+                </div>
         </div>
 
         <div id="offer" class="esconder">
-            
             <div class="cf-viewer-wrapper shaking">
-                <span><span id="cf-viewer-count">22</span> Others Are Purchasing Right Now</span>
+                <span><span id="cf-viewer-count">22</span> Others Are Purchasing The DaVinci Frequency Right Now</span>
             </div>
-
             <br>
             <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">ORDER NOW</a>
             
-            <div class="links-container">
-                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link">YES! I Want To Stop My Ringing Ears Forever. (Add This To My Cart)</a>
-            </div>
-
             <div class="dr-grant-note">
                 <p>
                     <b style="color:red; font-size:22px;">A Personal Note From Dr. Grant:</b><br><br>
@@ -136,44 +117,39 @@
                 <img src="images/banner1.svg" style="margin-top:30px; width:100%; border-radius:10px;">
             </div>
 
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">YES! I WANT SILENCE</a>
-            
             <div style="margin: 30px auto 50px; max-width: 320px;">
                 <img src="images/fc00db42cd71a4a2d6da13f0aba6359d_1.png" style="width: 100%;">
-                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link" style="font-size: 17px;">(Add To Cart)</a>
+                <p style="color:#0000ee; text-decoration:underline; font-weight:600; cursor:pointer; margin-top:10px;">(Add To Cart)</p>
             </div>
         </div>
-
-        <footer>
-            <p>All rights reserved. | Support: support@tinnituswave.com</p>
-        </footer>
     </div>
 
     <script>
         // Barra de carregamento
         var width = 0;
         var interval = setInterval(function() {
-            if (width >= 100) { clearInterval(interval); $('#preloader').fadeOut(300); }
-            else { width += Math.random() * 40; $('#bar').css('width', width + '%'); }
-        }, 100);
+            if (width >= 100) { clearInterval(interval); $('#preloader').fadeOut(200); }
+            else { width += Math.random() * 45; $('#bar').css('width', width + '%'); }
+        }, 80);
 
-        // FUNÇÃO QUE ATIVA A PELÍCULA E O SOM
-        function activateGlassShield() {
-            var iframe = document.getElementById('vsl-iframe');
-            var src = iframe.src;
+        // A MÁGICA: Injeta o vídeo só após o clique
+        function injectAndPlay() {
+            const wrapper = document.getElementById('wrapper');
+            const cover = document.getElementById('video-cover');
             
-            // 1. Libera o áudio
-            iframe.src = src.replace("&muted=true", "");
+            // Injeta o Iframe com som ativado (muted=false) e autoplay direto
+            wrapper.innerHTML = `
+                <iframe 
+                    id="vsl-iframe" 
+                    src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=false&controls=false&playsinline=1" 
+                    allow="autoplay;fullscreen" 
+                    allowfullscreen 
+                    style="display:block; pointer-events:none;">
+                </iframe>
+            `;
             
-            // 2. Remove o botão
-            $('#unmute-overlay').fadeOut(200);
-
-            // 3. ATIVA A PELÍCULA DE VIDRO IMEDIATAMENTE
-            // E tira a capacidade do iframe de receber qualquer evento de ponteiro
-            $('#video-shield').show();
-            $('#vsl-iframe').css('pointer-events', 'none');
-            
-            console.log("Película de vidro ativada. Toques bloqueados.");
+            // Esconde a capa
+            cover.style.display = "none";
         }
 
         var pitchTime = 5; 
