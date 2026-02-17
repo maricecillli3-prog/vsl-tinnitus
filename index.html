@@ -13,15 +13,17 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <style>
-        /* CSS DE ALTA CONVERSÃO REPLICADO */
+        /* CSS REPLICADO E OTIMIZADO */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; -webkit-font-smoothing: antialiased; }
-        .container { width: 100%; padding: 0 10px; margin: 0 auto; max-width: 1000px; }
+        .container { width: 100%; padding: 0 10px; margin: 0 auto; max-width: 1000px; text-align: center; }
         
+        /* Headline */
         .header { text-align: center; padding: 30px 0 10px; }
         h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 44px; line-height: 1.1; letter-spacing: -1px; }
         h1.elHeadline b { color: #ff0000; }
 
+        /* Widget Facebook */
         .viewer-widget {
             background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
             color: white; padding: 8px 25px; border-radius: 50px;
@@ -32,15 +34,17 @@
         .pulse-dot::after { content: ""; width: 100%; height: 100%; background: #10b981; border-radius: 50%; position: absolute; animation: pulse-green 2s infinite; }
         @keyframes pulse-green { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(2.8); opacity: 0; } }
 
+        /* Player Wrapper */
         .video-wrapper { 
             position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; 
             max-width: 850px; margin: 20px auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 6px; background: #000;
         }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* CLASSES DE EXIBIÇÃO */
+        /* Classe de controle - Display None com !important para garantir ocultação inicial */
         .esconder { display: none !important; }
         
+        /* Botão de Compra */
         .elButton {
             display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100;
             color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif;
@@ -48,6 +52,7 @@
             box-shadow: 0 12px 25px rgba(235, 193, 0, 0.3); transition: all 0.2s; margin-top: 30px;
             text-transform: uppercase; cursor: pointer;
         }
+        .elButton:hover { transform: scale(1.03); background: #fff033; }
 
         .payment-methods-container { margin: 10px auto 35px; max-width: 450px; }
         .payment-methods-img { width: 100%; height: auto; display: block; }
@@ -57,7 +62,7 @@
             border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left;
         }
 
-        /* MODAL DE SAÍDA - INDEPENDENTE */
+        /* MODAL DE SAÍDA */
         .modal-exit { 
             display: none; position: fixed; z-index: 999999; inset: 0; 
             background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); 
@@ -69,6 +74,11 @@
         }
 
         footer { border-top: 1px solid #f0f0f0; padding: 60px 0; text-align: center; font-size: 13px; color: #999; }
+
+        @media (max-width: 770px) {
+            h1.elHeadline { font-size: 28px; }
+            .elButton { font-size: 24px; padding: 18px 20px; }
+        }
     </style>
 </head>
 
@@ -87,7 +97,7 @@
         </div>
     </div>
 
-    <div class="container" style="text-align: center;">
+    <div class="container">
         <div class="header">
             <h1 class="elHeadline"><b>The Greatest Enemy of Tinnitus?</b><br>This 5-Minute Evening Routine Stops the Ear Ringing</h1>
             <div class="viewer-widget">
@@ -129,50 +139,51 @@
     </div>
 
     <script>
-        // LÓGICA DE EXIBIÇÃO SEM DEPENDÊNCIA EXTERNA
-        var pitchTime = 1367; // 22:47 minutos em segundos
-        var jaMostrou = false;
+        // CONFIGURAÇÃO DO TEMPO DE ATRASO
+        var pitchTime = 1367; // 22:47 minutos
+        var jaExibido = false;
 
-        function mostrarConteudo() {
-            if (!jaMostrou) {
-                jaMostrou = true;
-                $('#offer').removeClass('esconder').hide().fadeIn(1000);
-                console.log("Oferta liberada!");
+        function revelarOferta() {
+            if (!jaExibido) {
+                jaExibido = true;
+                $('#offer').removeClass('esconder').hide().fadeIn(1500);
+                console.log("Oferta revelada com sucesso.");
             }
         }
 
-        // 1. Escuta a Bunny API
+        // 1. Escuta a Bunny API (Funciona se "Enable API" estiver ON na Bunny)
         window.addEventListener('message', function(e) {
             if (e.data && e.data.event === 'timeupdate') {
                 if (e.data.value >= pitchTime) {
-                    mostrarConteudo();
+                    revelarOferta();
                 }
             }
         });
 
-        // 2. Backup: Se o usuário der play, inicia um timer interno
+        // 2. Backup de Segurança: Timer inicia quando o vídeo é iniciado
         window.addEventListener('message', function(e) {
             if (e.data && e.data.event === 'play') {
-                setTimeout(mostrarConteudo, pitchTime * 1000);
+                console.log("Vídeo iniciado. Timer de backup rodando...");
+                setTimeout(revelarOferta, pitchTime * 1000);
             }
         });
 
-        // 3. Pop-up de Saída (Detecta mouse saindo por cima)
-        var popupAtivado = false;
+        // 3. Pop-up de Saída (Detecta mouse saindo pelo topo)
+        var popupStatus = false;
         $(document).on('mouseleave', function(e) {
-            if (e.clientY < 20 && !popupAtivado) {
-                popupAtivado = true;
-                $('#exitModal').show();
+            if (e.clientY < 20 && !popupStatus) {
+                popupStatus = true;
+                $('#exitModal').fadeIn(300);
             }
         });
 
-        // Contador de visualizações fake
+        // Simulação de visualizações em tempo real
         setInterval(function() {
-            var n = parseInt($('#vc').text()) + (Math.floor(Math.random() * 5) - 2);
-            $('#vc').text(n > 700 ? n : 715);
+            var atual = parseInt($('#vc').text());
+            var variacao = Math.floor(Math.random() * 5) - 2;
+            var novo = atual + variacao;
+            $('#vc').text(novo > 700 ? novo : 715);
         }, 3000);
-
-        // TESTE RÁPIDO: Se você quiser ver agora, digite mostrarConteudo() no console do navegador.
     </script>
 </body>
 </html>
