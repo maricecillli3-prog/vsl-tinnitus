@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="robots" content="noindex">
     <link rel="icon" type="image/x-icon" href="images/33ab840a118660e348a6a49784dd0b70.png">
-    <title>TESTE DE VSL</title>
+    <title>TESTE DE REPRODUÇÃO</title>
 
     <link href="https://fonts.googleapis.com/css?family=Lato:900|Open+Sans:400,600,700|Oswald:700|Inter:500" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <style>
+        /* RESET E ESTRUTURA */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; padding: 0 10px; margin: 0 auto; max-width: 1000px; text-align: center; }
@@ -22,16 +23,33 @@
 
         h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 32px; line-height: 1.1; margin-top: 25px; }
 
-        /* VSL QUADRADA - SEM BLINDAGEM */
-        .video-container-vsl { position: relative; max-width: 550px; margin: 25px auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; background: #000; }
-        .video-wrapper { position: relative; padding-bottom: 100%; height: 0; }
-        
-        /* Removido o pointer-events para você poder clicar */
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        /* VSL QUADRADA E FIXA NA PÁGINA */
+        .video-container-vsl { 
+            position: relative; 
+            max-width: 550px; 
+            margin: 25px auto; 
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3); 
+            border-radius: 8px; 
+            overflow: hidden; 
+            background: #000; 
+        }
+        .video-wrapper { 
+            position: relative; 
+            padding-bottom: 100%; /* Mantém o formato quadrado */
+            height: 0; 
+        }
+        .video-wrapper iframe { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            border: 0; 
+        }
 
         .esconder { display: none !important; }
         
-        /* NOTIFICAÇÃO E BOTÕES */
+        /* ESTILOS DOS BOTÕES E TEXTOS */
         .cf-viewer-wrapper { background-color: #fffeec; border: 1px solid #e7e4b1; padding: 15px; border-radius: 6px; display: inline-block; margin: 20px 0 5px; font-size: 16px; font-weight: 700; color: #444; width: 100%; max-width: 580px; }
         .shaking { animation: shake-box 0.8s infinite ease-in-out; }
         @keyframes shake-box { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
@@ -39,6 +57,7 @@
         .elButton { display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px; margin-top: 10px; text-transform: uppercase; }
         .blue-link { display: block; color: #0000ee; text-decoration: underline; font-size: 17px; font-weight: 600; margin-top: 12px; cursor: pointer; }
 
+        /* CARTA DO DOUTOR */
         .dr-grant-note { background: #fffef2; border: 2px dashed #d4d0a5; padding: 30px; border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left; }
         .dr-grant-note p { font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.6; color: #333; }
 
@@ -49,7 +68,7 @@
 <body>
 
     <div id="preloader">
-        <p style="font-weight:700; color:#0d0f61;">MODO TESTE ATIVO...</p>
+        <p style="font-weight:700; color:#0d0f61;">PREPARANDO VÍDEO...</p>
         <div class="progress-container"><div class="progress-bar" id="bar"></div></div>
     </div>
 
@@ -58,7 +77,14 @@
 
         <div class="video-container-vsl">
             <div class="video-wrapper">
-                <iframe id="vsl-player" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=false&muted=false&controls=true" allow="autoplay;fullscreen" allowfullscreen></iframe>
+                <iframe 
+                    id="vsl-player" 
+                    src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=false&muted=false&controls=true&playsinline=1" 
+                    allow="autoplay;fullscreen" 
+                    allowfullscreen 
+                    webkit-playsinline="true" 
+                    playsinline="true">
+                </iframe>
             </div>
         </div>
 
@@ -92,6 +118,7 @@
     </div>
 
     <script>
+        // BARRA DE CARREGAMENTO
         var width = 0;
         var interval = setInterval(function() {
             if (width >= 100) { clearInterval(interval); $('#preloader').fadeOut(200); }
