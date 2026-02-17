@@ -28,8 +28,18 @@
         .video-wrapper { position: relative; padding-bottom: 100%; height: 0; }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* BOTÃO DE SOM (UNMUTE) */
-        #unmute-overlay { position: absolute; inset: 0; z-index: 100; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        /* BOTÃO DE ATIVAR SOM (Gatilho de Play) */
+        #unmute-overlay { 
+            position: absolute; 
+            inset: 0; 
+            z-index: 100; 
+            background: rgba(0,0,0,0.6); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+        }
         .unmute-btn { background: #ff0000; color: #fff; padding: 18px 30px; border-radius: 50px; font-weight: 800; font-size: 18px; animation: pulse 1.5s infinite; text-transform: uppercase; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
@@ -60,13 +70,14 @@
         <h1 class="elHeadline"><b>The Greatest Enemy of Tinnitus?</b><br>This 5-Minute Evening Routine Stops the Ear Ringing</h1>
 
         <div class="video-container-vsl">
-            <div id="unmute-overlay" onclick="unmuteNow()">
-                <div class="unmute-btn">🔊 CLICK FOR SOUND</div>
+            <div id="unmute-overlay" onclick="startVslNow()">
+                <div style="font-size: 40px; margin-bottom: 10px;">🔊</div>
+                <div class="unmute-btn">CLICK TO ACTIVATE SOUND</div>
             </div>
 
             <div class="video-wrapper">
                 <iframe 
-                    id="vsl-video" 
+                    id="vsl-iframe" 
                     src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&loop=false&muted=true&preload=true&responsive=false&playsinline=1" 
                     loading="lazy" 
                     style="border:0;position:absolute;top:0;height:100%;width:100%;" 
@@ -79,26 +90,20 @@
         </div>
 
         <div id="offer" class="esconder">
-            
             <div class="cf-viewer-wrapper shaking">
                 <span><span id="cf-viewer-count">22</span> Others Are Purchasing Right Now</span>
             </div>
-
             <br>
             <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">ORDER NOW</a>
             
             <div class="links-container">
-                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link">
-                    YES! I Want To Stop My Ringing Ears Forever. (Add This To My Cart)
-                </a>
-                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link" style="font-size: 16px; opacity: 0.8;">
-                    ​I Deserve To Enjoy My Golden Years In Silence.
-                </a>
+                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link">YES! I Want To Stop My Ringing Ears Forever. (Add This To My Cart)</a>
+                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link" style="font-size: 15px; opacity: 0.8;">​I Deserve To Enjoy My Golden Years In Silence.</a>
             </div>
 
             <div class="dr-grant-note">
                 <p>
-                    <b style="color:red; font-size:22px; font-style:normal;">A Personal Note From Dr. Grant:</b><br><br>
+                    <b style="color:red; font-size:22px;">A Personal Note From Dr. Grant:</b><br><br>
                     "If you are over 60 and have silently resigned yourself to the ringing, I beg you: <b style="color:red; text-decoration: underline;">never give up on yourself.</b> Please, just give this an honest try for a few days; words cannot describe this, you simply have to experience it."
                 </p>
                 <img src="images/banner1.svg" style="margin-top:30px; width:100%; border-radius:10px;">
@@ -106,7 +111,7 @@
 
             <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">YES! I WANT SILENCE</a>
             
-            <div style="margin: 25px auto 50px; max-width: 320px;">
+            <div style="margin: 30px auto 50px; max-width: 320px;">
                 <img src="images/fc00db42cd71a4a2d6da13f0aba6359d_1.png" style="width: 100%;">
                 <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link" style="font-size: 17px;">(Add To Cart)</a>
             </div>
@@ -118,23 +123,26 @@
     </div>
 
     <script>
-        // Barra de carregamento
+        // Barra de carregamento ultra rápida
         var width = 0;
         var interval = setInterval(function() {
             if (width >= 100) { clearInterval(interval); $('#preloader').fadeOut(200); }
-            else { width += Math.random() * 45; $('#bar').css('width', width + '%'); }
+            else { width += Math.random() * 50; $('#bar').css('width', width + '%'); }
         }, 100);
 
-        // FUNÇÃO UNMUTE (Recarrega sem o mudo)
-        function unmuteNow() {
-            var iframe = document.getElementById('vsl-video');
+        // FUNÇÃO QUE INICIA O VÍDEO COM SOM
+        function startVslNow() {
+            var iframe = document.getElementById('vsl-iframe');
             var src = iframe.src;
-            // Remove o mudo para liberar o áudio
+            
+            // O segredo: Recarregar o SRC sem o muted e forçando o autoplay
+            // Isso garante que o vídeo "comece" para o usuário com som.
             iframe.src = src.replace("&muted=true", "");
-            $('#unmute-overlay').fadeOut(200);
+            
+            $('#unmute-overlay').fadeOut(300);
         }
 
-        var pitchTime = 5; // Mantenha 5 para teste
+        var pitchTime = 5; // Mantenha 5 para testar o surgimento do botão
         var displayed = false;
 
         function showOffer() {
