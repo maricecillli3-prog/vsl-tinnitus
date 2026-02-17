@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots" content="noindex">
+    
     <link rel="icon" type="image/x-icon" href="images/33ab840a118660e348a6a49784dd0b70.png">
     <title>(1) Unread Message</title>
 
     <link href="https://fonts.googleapis.com/css?family=Lato:900|Open+Sans:400,600,700|Oswald:700|Inter:500" rel="stylesheet">
-    <link rel="stylesheet" href="css/all.css">
-    <script src="js/jquery.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <style>
+        /* CSS DE ALTA CONVERSÃO REPLICADO */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; padding: 0 10px; margin: 0 auto; max-width: 1000px; }
@@ -20,12 +22,11 @@
         h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 44px; line-height: 1.1; letter-spacing: -1px; }
         h1.elHeadline b { color: #ff0000; }
 
-        .viewer-widget-container { display: flex; justify-content: center; margin: 15px 0; }
         .viewer-widget {
             background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
             color: white; padding: 8px 25px; border-radius: 50px;
             display: inline-flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600;
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.35);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.35); margin: 15px 0;
         }
         .pulse-dot { width: 10px; height: 10px; background: #10b981; border-radius: 50%; position: relative; }
         .pulse-dot::after { content: ""; width: 100%; height: 100%; background: #10b981; border-radius: 50%; position: absolute; animation: pulse-green 2s infinite; }
@@ -37,15 +38,9 @@
         }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        .purchase-notify {
-            background-color: #fff9c4; border: 1px solid #fbc02d; padding: 12px 20px;
-            border-radius: 6px; display: inline-block; margin: 15px 0; font-size: 16px; font-weight: 700; color: #444;
-        }
-        .shaking { animation: shake-box 0.5s ease-in-out; }
-        @keyframes shake-box { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-
-        /* SEÇÃO DA OFERTA */
+        /* CLASSES DE EXIBIÇÃO */
         .esconder { display: none !important; }
+        
         .elButton {
             display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100;
             color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif;
@@ -53,6 +48,7 @@
             box-shadow: 0 12px 25px rgba(235, 193, 0, 0.3); transition: all 0.2s; margin-top: 30px;
             text-transform: uppercase; cursor: pointer;
         }
+
         .payment-methods-container { margin: 10px auto 35px; max-width: 450px; }
         .payment-methods-img { width: 100%; height: auto; display: block; }
 
@@ -61,16 +57,18 @@
             border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left;
         }
 
-        /* MODAL DE SAÍDA - FIXO */
-        .modal-exit { display: none; position: fixed; z-index: 100000; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); }
-        .modal-content { background: white; margin: 5% auto; padding: 45px 30px; width: 95%; max-width: 600px; border-radius: 20px; border: 8px solid #0d0f61; position: relative; text-align: center; }
-        
-        footer { border-top: 1px solid #f0f0f0; padding: 60px 0; text-align: center; font-size: 13px; color: #999; }
-        
-        @media (max-width: 770px) {
-            h1.elHeadline { font-size: 28px; }
-            .elButton { font-size: 24px; padding: 18px 20px; }
+        /* MODAL DE SAÍDA - INDEPENDENTE */
+        .modal-exit { 
+            display: none; position: fixed; z-index: 999999; inset: 0; 
+            background: rgba(0,0,0,0.92); backdrop-filter: blur(8px); 
         }
+        .modal-content { 
+            background: white; margin: 5% auto; padding: 45px 30px; width: 90%; 
+            max-width: 600px; border-radius: 20px; border: 8px solid #0d0f61; position: relative; 
+            text-align: center; font-family: 'Open Sans', sans-serif;
+        }
+
+        footer { border-top: 1px solid #f0f0f0; padding: 60px 0; text-align: center; font-size: 13px; color: #999; }
     </style>
 </head>
 
@@ -81,22 +79,20 @@
             <span style="position:absolute; right:15px; top:10px; font-size:35px; color:#ccc; cursor:pointer;" onclick="$('#exitModal').hide()">&times;</span>
             <h1 style="color:#0d0f61; font-size:30px; font-family:'Lato';">WAIT!</h1>
             <p style="color:red; font-weight:800; font-size:20px; margin: 15px 0; text-transform:uppercase;">In Just 1:45... I'll Reveal My 7-Second Ear Trick That Silences Tinnitus Fast!</p>
-            <div style="display:flex; align-items:center; gap:20px; text-align:left; background:#f9f9f9; padding:20px; border-radius:15px;">
+            <div style="display:flex; align-items:center; gap:20px; text-align:left; background:#f9f9f9; padding:20px; border-radius:15px; margin-bottom: 20px;">
                 <img src="images/687464baa74f39b47aca7abf1a71422d.png" style="width:130px; border-radius:12px;">
                 <p style="font-size:16px;">"It's a simple 7-second trick you can do at home. Believe me, you don't want to miss this."</p>
             </div>
-            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="font-size:20px;">Keep Watching >></a>
+            <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton" style="font-size:20px; margin:0;">Keep Watching >></a>
         </div>
     </div>
 
-    <div class="container">
+    <div class="container" style="text-align: center;">
         <div class="header">
             <h1 class="elHeadline"><b>The Greatest Enemy of Tinnitus?</b><br>This 5-Minute Evening Routine Stops the Ear Ringing</h1>
-            <div class="viewer-widget-container">
-                <div class="viewer-widget">
-                    <div class="pulse-dot"></div>
-                    <span><span id="vc">742</span> people from <span style="color:#fbbf24; font-weight:800;">Facebook</span> are watching</span>
-                </div>
+            <div class="viewer-widget">
+                <div class="pulse-dot"></div>
+                <span><span id="vc">742</span> people from <span style="color:#fbbf24; font-weight:800;">Facebook</span> are watching</span>
             </div>
         </div>
 
@@ -104,13 +100,7 @@
             <iframe id="bunny-video" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true" allow="autoplay;fullscreen" allowfullscreen></iframe>
         </div>
 
-        <div style="text-align:center;">
-            <div id="p-notify" class="purchase-notify esconder">
-                <span id="bc">18</span> Others Are Purchasing The DaVinci Frequency Right Now
-            </div>
-        </div>
-
-        <div id="offer" class="esconder" style="text-align: center;">
+        <div id="offer" class="esconder">
             <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="elButton">ORDER NOW</a>
             
             <div class="payment-methods-container">
@@ -118,7 +108,7 @@
             </div>
 
             <div class="dr-grant-note">
-                <p style="font-family:'Inter'; font-size:19px; font-style:italic;">
+                <p style="font-family:'Inter'; font-size:19px; font-style:italic; line-height:1.6;">
                     <b style="color:red; font-style:normal; font-size:22px;">A Personal Note From Dr. Grant:</b><br><br>
                     "If you are over 60 and have silently resigned yourself to the ringing, I beg you: <u style="color:red; font-weight:700;">never give up on yourself.</u>"
                 </p>
@@ -130,56 +120,59 @@
             <div style="margin: 50px 0;">
                 <img src="images/fc00db42cd71a4a2d6da13f0aba6359d.png" style="max-width:340px;">
             </div>
-
-            <footer>
-                <p>All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
-                <p style="margin:15px 0;">Support: support@tinnituswave.com</p>
-            </footer>
         </div>
+
+        <footer>
+            <p>All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms</a></p>
+            <p style="margin:15px 0;">Support: support@tinnituswave.com</p>
+        </footer>
     </div>
 
     <script>
-        // CONFIGURAÇÃO DO PITCH (22:47 = 1367 Segundos)
-        var pitchTime = 1367; 
-        var showOffer = function() {
-            $('#offer, #p-notify').removeClass('esconder').hide().fadeIn(1000);
-        };
+        // LÓGICA DE EXIBIÇÃO SEM DEPENDÊNCIA EXTERNA
+        var pitchTime = 1367; // 22:47 minutos em segundos
+        var jaMostrou = false;
 
-        // 1. GATILHO POR SINAL DO VÍDEO (BUNNY API)
+        function mostrarConteudo() {
+            if (!jaMostrou) {
+                jaMostrou = true;
+                $('#offer').removeClass('esconder').hide().fadeIn(1000);
+                console.log("Oferta liberada!");
+            }
+        }
+
+        // 1. Escuta a Bunny API
         window.addEventListener('message', function(e) {
             if (e.data && e.data.event === 'timeupdate') {
                 if (e.data.value >= pitchTime) {
-                    showOffer();
+                    mostrarConteudo();
                 }
             }
         });
 
-        // 2. BACKUP DE SEGURANÇA (CRONÔMETRO REAL)
-        // Se o vídeo começar a tocar e o sinal da API falhar, isso garante a exibição.
-        var videoStarted = false;
+        // 2. Backup: Se o usuário der play, inicia um timer interno
         window.addEventListener('message', function(e) {
-            if (e.data && e.data.event === 'play' && !videoStarted) {
-                videoStarted = true;
-                setTimeout(function() {
-                    showOffer();
-                }, pitchTime * 1000); // Converte segundos para milisegundos
+            if (e.data && e.data.event === 'play') {
+                setTimeout(mostrarConteudo, pitchTime * 1000);
             }
         });
 
-        // 3. POP-UP DE SAÍDA (EXIT INTENT REFORÇADO)
-        var showPopup = false;
+        // 3. Pop-up de Saída (Detecta mouse saindo por cima)
+        var popupAtivado = false;
         $(document).on('mouseleave', function(e) {
-            if (e.clientY < 20 && !showPopup) {
-                showPopup = true;
-                $('#exitModal').fadeIn(300);
+            if (e.clientY < 20 && !popupAtivado) {
+                popupAtivado = true;
+                $('#exitModal').show();
             }
         });
 
-        // Simulação de visualizações
+        // Contador de visualizações fake
         setInterval(function() {
             var n = parseInt($('#vc').text()) + (Math.floor(Math.random() * 5) - 2);
             $('#vc').text(n > 700 ? n : 715);
         }, 3000);
+
+        // TESTE RÁPIDO: Se você quiser ver agora, digite mostrarConteudo() no console do navegador.
     </script>
 </body>
 </html>
