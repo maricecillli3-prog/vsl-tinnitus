@@ -15,7 +15,7 @@
         body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; -webkit-font-smoothing: antialiased; }
         .container { width: 100%; padding: 0 10px; margin: 0 auto; max-width: 1000px; text-align: center; }
         
-        /* BARRA DE CARREGAMENTO */
+        /* PRELOADER */
         #preloader { position: fixed; inset: 0; background: #fff; z-index: 1000000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .progress-container { width: 250px; height: 10px; background: #f0f0f0; border-radius: 10px; margin-top: 15px; }
         .progress-bar { width: 0%; height: 100%; background: #ff0000; transition: width 0.1s; }
@@ -23,24 +23,21 @@
         h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 32px; line-height: 1.1; margin-top: 25px; }
         @media (min-width: 768px) { h1.elHeadline { font-size: 44px; } }
 
-        /* CONTAINER DO VÍDEO QUADRADO */
+        /* VSL QUADRADA */
         .video-container-vsl { position: relative; max-width: 600px; margin: 25px auto; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 8px; overflow: hidden; background: #000; }
         .video-wrapper { position: relative; padding-bottom: 100%; height: 0; }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; z-index: 1; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* CAMADA DE BLINDAGEM (Impede toque/pausa) */
-        .video-shield { position: absolute; inset: 0; z-index: 50; background: rgba(0,0,0,0); display: none; }
+        /* CAMADA DE BLINDAGEM (SÓ ATIVA DEPOIS DO UNMUTE) */
+        #video-shield { position: absolute; inset: 0; z-index: 90; background: rgba(0,0,0,0); display: none; }
 
-        /* SOBREPOSIÇÃO DE SOM (UNMUTE) */
-        #sound-overlay { position: absolute; inset: 0; z-index: 100; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: #fff; }
-        .unmute-icon { font-size: 50px; margin-bottom: 15px; animation: pulse 1.5s infinite; }
-        .unmute-text { font-weight: 800; font-size: 18px; text-transform: uppercase; background: #ff0000; padding: 12px 25px; border-radius: 50px; }
-
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        /* BOTÃO DE DESMUTAR */
+        #unmute-overlay { position: absolute; inset: 0; z-index: 100; background: rgba(0,0,0,0.6); display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; color: #fff; }
+        .unmute-btn { background: #ff0000; color: #fff; padding: 15px 25px; border-radius: 50px; font-weight: 800; font-size: 18px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
 
         .esconder { display: none !important; }
         
-        /* NOTIFICAÇÃO E BOTÕES */
         .cf-viewer-wrapper { background-color: #fffeec; border: 1px solid #e7e4b1; padding: 15px; border-radius: 6px; display: inline-block; margin: 20px 0 5px; font-size: 16px; font-weight: 700; color: #444; width: 100%; max-width: 580px; }
         .shaking { animation: shake-box 0.8s infinite ease-in-out; }
         @keyframes shake-box { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
@@ -48,7 +45,6 @@
         .elButton { display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px; margin-top: 10px; text-transform: uppercase; }
         .blue-link { display: block; color: #0000ee; text-decoration: underline; font-size: 17px; font-weight: 600; margin-top: 12px; cursor: pointer; }
 
-        /* CARTA DO DOUTOR */
         .dr-grant-note { background: #fffef2; border: 2px dashed #d4d0a5; padding: 30px; border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left; }
         .dr-grant-note p { font-family: 'Inter', sans-serif; font-size: 18px; line-height: 1.6; color: #333; }
 
@@ -59,7 +55,7 @@
 <body>
 
     <div id="preloader">
-        <p style="font-weight:700; color:#0d0f61;">PREPARING VIDEO...</p>
+        <p style="font-weight:700; color:#0d0f61;">PREPARING YOUR VIDEO...</p>
         <div class="progress-container"><div class="progress-bar" id="bar"></div></div>
     </div>
 
@@ -67,11 +63,11 @@
         <h1 class="elHeadline"><b>The Greatest Enemy of Tinnitus?</b><br>This 5-Minute Evening Routine Stops the Ear Ringing</h1>
 
         <div class="video-container-vsl">
-            <div class="video-shield" id="video-lock"></div>
+            <div id="video-shield"></div>
 
-            <div id="sound-overlay" onclick="enableSoundAndLock()">
-                <div class="unmute-icon">🔊</div>
-                <div class="unmute-text">CLICK TO UNMUTE</div>
+            <div id="unmute-overlay" onclick="handleUnmute()">
+                <div style="font-size: 40px; margin-bottom: 10px;">🔊</div>
+                <div class="unmute-btn">CLICK TO ACTIVATE SOUND</div>
             </div>
 
             <div class="video-wrapper">
@@ -103,7 +99,7 @@
             
             <div style="margin: 30px auto 50px; max-width: 320px;">
                 <img src="images/fc00db42cd71a4a2d6da13f0aba6359d_1.png" style="width: 100%;">
-                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link" style="font-size: 16px;">(Add To Cart)</a>
+                <a href="https://www.checkout-ds24.com/product/653474/?ds24tr=scjscontrol" class="blue-link">(Add To Cart)</a>
             </div>
         </div>
     </div>
@@ -116,27 +112,26 @@
             else { width += Math.random() * 30; $('#bar').css('width', width + '%'); }
         }, 100);
 
-        // FUNÇÃO QUE ATIVA SOM E TRANCA O VÍDEO
-        function enableSoundAndLock() {
+        // FUNÇÃO QUE RESOLVE O PROBLEMA DO MOBILE
+        function handleUnmute() {
             var iframe = document.getElementById('vsl-iframe');
             var src = iframe.src;
             
-            // Recarrega o vídeo sem o "muted" para liberar o som
+            // Recarrega o vídeo SEM o mudo. Como o clique veio do lead, o som é liberado.
             iframe.src = src.replace("&muted=true", "");
             
-            // Remove o botão de som e ativa a camada de vidro invisível
-            $('#sound-overlay').fadeOut(200);
-            $('#video-lock').show(); // Agora o lead não consegue mais clicar no player
+            // Esconde o botão e ATIVA a blindagem total
+            $('#unmute-overlay').fadeOut(200);
+            setTimeout(function(){
+                $('#video-shield').show();
+            }, 500);
         }
 
-        var pitchTime = 5; // Teste de 5 segundos
+        var pitchTime = 5; 
         var displayed = false;
 
         function showOffer() {
-            if (!displayed) { 
-                displayed = true; 
-                $('#offer').removeClass('esconder').hide().fadeIn(1000); 
-            }
+            if (!displayed) { displayed = true; $('#offer').removeClass('esconder').hide().fadeIn(1000); }
         }
 
         setTimeout(showOffer, pitchTime * 1000);
