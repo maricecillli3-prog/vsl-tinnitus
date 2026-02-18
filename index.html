@@ -11,6 +11,21 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:900|Open+Sans:400,600,700|Oswald:700|Inter:500" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+    <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1695481074775211');
+    fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=1695481074775211&ev=PageView&noscript=1"
+    /></noscript>
     <style>
         /* --- ESTRUTURA GERAL --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,7 +62,7 @@
         .video-wrapper { position: relative; padding-bottom: 100%; height: 0; }
         #vsl-iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* BOTÃO DE COMPRA PISCANTE (ESTILO GOOGLE ADS) */
+        /* BOTÃO DE COMPRA PISCANTE */
         @keyframes flashing {
             0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 234, 0, 0.7); }
             50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(255, 234, 0, 0); }
@@ -88,6 +103,7 @@
             font-weight: 900; text-transform: uppercase; text-decoration: none; display: inline-block; width: 100%;
             font-size: 24px; border-bottom: 4px solid #e5c100;
             animation: flashing 1.2s infinite ease-in-out;
+            cursor: pointer;
         }
         .close-popup { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #ccc; font-weight: bold; }
 
