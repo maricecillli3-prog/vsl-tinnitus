@@ -26,6 +26,41 @@
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=1695481074775211&ev=PageView&noscript=1"
     /></noscript>
+
+    <script>
+    (function(){
+      var W="https://hgxpvsgfhypyjumqqjip.supabase.co/rest/v1/tracking_events?apikey=sb_publishable_i7R82nqYRC4JKacvknEW-Q_9HZoi1rn";
+      var S=Date.now(),D=document,B=D.body;
+      function send(e,d){
+        navigator.sendBeacon?navigator.sendBeacon(W,JSON.stringify({event:e,data:d,ts:Date.now(),url:location.href}))
+        :fetch(W,{method:"POST",body:JSON.stringify({event:e,data:d,ts:Date.now(),url:location.href}),keepalive:true});
+      }
+      // Scroll tracking (25%, 50%, 75%, 100%)
+      var fired={};
+      window.addEventListener("scroll",function(){
+        var h=D.documentElement.scrollHeight-window.innerHeight;
+        if(h<=0)return;
+        var p=Math.round((window.scrollY/h)*100);
+        [25,50,75,100].forEach(function(t){
+          if(p>=t&&!fired[t]){fired[t]=1;send("scroll",{depth:t});}
+        });
+      },{passive:true});
+      // Time on page (every 30s + on leave)
+      var timer=setInterval(function(){
+        send("time_on_page",{seconds:Math.round((Date.now()-S)/1000)});
+      },30000);
+      window.addEventListener("beforeunload",function(){
+        clearInterval(timer);
+        send("time_on_page",{seconds:Math.round((Date.now()-S)/1000),final:true});
+      });
+      // CTA click tracking
+      D.addEventListener("click",function(e){
+        var el=e.target.closest("a[href*='checkout'],a[href*='pay'],button[data-checkout],.cta-button");
+        if(el)send("cta_click",{text:el.innerText||"",href:el.href||""});
+      });
+    })();
+    </script>
+
     <style>
         /* --- ESTRUTURA GERAL --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
