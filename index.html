@@ -23,9 +23,6 @@
     fbq('init', '1695481074775211');
     fbq('track', 'PageView');
     </script>
-    <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1695481074775211&ev=PageView&noscript=1"
-    /></noscript>
 
     <script>
     (function(){
@@ -49,11 +46,10 @@
           if(p>=t&&!fired[t]){fired[t]=1; send("scroll", {depth:t});}
         });
       },{passive:true});
-      var timer=setInterval(function(){ send("time_on_page", {seconds:Math.round((Date.now()-S)/1000)}); },30000);
-      window.addEventListener("beforeunload", function(){ clearInterval(timer); send("time_on_page", {seconds:Math.round((Date.now()-S)/1000), final:true}); });
+      setInterval(function(){ send("time_on_page", {seconds:Math.round((Date.now()-S)/1000)}); },30000);
       D.addEventListener("click", function(e){
-        var el=e.target.closest("a[href*='checkout'], a[href*='pay'], .elButton, .cta-button, .mobile-popup-btn");
-        if(el) send("cta_click", {text: el.innerText.trim() || "checkout", href: el.href || ""});
+        var el=e.target.closest("a[href*='checkout'], .elButton, .popup-btn-yellow");
+        if(el) send("cta_click", {text: el.innerText.trim() || "cta"});
       });
     })();
     </script>
@@ -61,81 +57,75 @@
     <style>
         /* --- ESTRUTURA GERAL --- */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        body { font-family: 'Open Sans', sans-serif; background: #fff; color: #2f2f2f; overflow-x: hidden; }
         .container { width: 100%; padding: 0 10px; margin: 0 auto; max-width: 1000px; text-align: center; }
         
         #preloader { position: fixed; inset: 0; background: #fff; z-index: 1000000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .progress-container { width: 250px; height: 10px; background: #f0f0f0; border-radius: 10px; margin-top: 15px; }
         .progress-bar { width: 0%; height: 100%; background: #ff0000; transition: width 0.1s; }
 
-        h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 32px; line-height: 1.2; margin: 25px 0 15px; }
+        h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 30px; line-height: 1.2; margin: 25px 0 15px; }
         .highlight-red { color: #e31b23; }
-        @media (min-width: 768px) { h1.elHeadline { font-size: 46px; } }
 
-        @keyframes shimmer-bg { 0% { left: -50%; } 100% { left: 150%; } }
-        @keyframes pulse-dot { 0% { transform: scale(0.8); } 50% { transform: scale(1); } 100% { transform: scale(0.8); } }
-        @keyframes pulse-ring { 0% { transform: translate(-50%, -50%) scale(0.33); opacity: 1; } 80%, 100% { transform: translate(-50%, -50%) scale(2); opacity: 0; } }
-        .fb-tag-container { margin-bottom: 20px; }
-
-        .video-container-vsl { position: relative; max-width: 550px; margin: 0 auto 25px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border: 8px solid #000; border-radius: 12px; overflow: hidden; background: #000; }
-        .video-wrapper { position: relative; padding-bottom: 100%; height: 0; }
+        .video-container-vsl { position: relative; max-width: 750px; margin: 0 auto 25px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border: 4px solid #000; border-radius: 8px; overflow: hidden; background: #000; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
         #vsl-iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* Camada para trancar vídeo no Desktop */
+        /* TRAVA DESKTOP (Inalterada como pedido) */
         #video-lock-overlay { display: none; position: absolute; inset: 0; z-index: 99; background: transparent; }
         @media (min-width: 1025px) { .locked #video-lock-overlay { display: block; } }
 
-        @keyframes flashing {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 234, 0, 0.7); }
-            50% { transform: scale(1.05); box-shadow: 0 0 20px 10px rgba(255, 234, 0, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 234, 0, 0.7); }
+        /* BOTÃO PULSANTE YOUTUBE (MOBILE) */
+        @keyframes yt-pulse {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+            50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.8; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
         }
-
-        .elButton { display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px; margin-top: 10px; text-transform: uppercase; animation: flashing 1.5s infinite ease-in-out; cursor: pointer; }
-
-        /* BOTÃO MOBILE 5 MINUTOS (Gatilho Estilo Pop-up) */
-        #mobile-floating-cta {
-            display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 400px; z-index: 1000;
+        .yt-play-btn {
+            display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 75px; height: 52px; background: #FF0000; border-radius: 12px; z-index: 110;
+            cursor: pointer; align-items: center; justify-content: center;
+            animation: yt-pulse 1.2s infinite ease-in-out;
         }
-        @media (max-width: 767px) { #mobile-floating-cta.show { display: block; } }
-        .mobile-popup-btn {
-            background: #ffea00; color: #0d0f61; padding: 18px; border-radius: 50px;
-            font-family: 'Oswald', sans-serif; font-size: 20px; font-weight: 700;
-            text-decoration: none; display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid #fff; text-transform: uppercase;
+        .yt-play-btn::after {
+            content: ""; display: block; width: 0; height: 0;
+            border-top: 12px solid transparent; border-bottom: 12px solid transparent;
+            border-left: 20px solid #fff; margin-left: 5px;
         }
+        @media (max-width: 767px) { .yt-play-btn { display: flex; } }
 
+        /* POP-UP ESTRATÉGICO CONCORRENTE */
         #exit-popup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000000; align-items: center; justify-content: center; }
-        .popup-content { background: #fff; padding: 40px 20px; border-radius: 15px; max-width: 450px; width: 92%; text-align: center; position: relative; border: 8px solid #e31b23; }
-        .popup-headline { color: #e31b23; font-family: 'Oswald', sans-serif; font-size: 38px; font-weight: 700; margin-bottom: 5px; line-height: 1; }
-        .popup-sub { color: #000; font-size: 22px; font-weight: 700; margin-bottom: 25px; line-height: 1.2; }
-        .popup-btn { background: #ffea00; color: #0d0f61; padding: 20px; border-radius: 10px; font-weight: 900; text-transform: uppercase; text-decoration: none; display: inline-block; width: 100%; font-size: 24px; border-bottom: 4px solid #e5c100; animation: flashing 1.2s infinite ease-in-out; cursor: pointer; }
-        .close-popup { position: absolute; top: 10px; right: 15px; font-size: 28px; cursor: pointer; color: #ccc; font-weight: bold; }
+        .popup-content { background: #fff; padding: 25px; border-radius: 5px; max-width: 550px; width: 95%; text-align: center; position: relative; border: 3px solid #ccc; }
+        .popup-wait { color: #ff0000; font-weight: 900; font-size: 32px; font-family: 'Lato', sans-serif; }
+        .popup-reveal { color: #0d0f61; font-weight: 900; font-size: 24px; line-height: 1.2; margin: 10px 0 20px; }
+        .popup-flex { display: flex; gap: 15px; align-items: center; text-align: left; margin-bottom: 20px; }
+        .popup-thumb { width: 45%; border-radius: 8px; position: relative; cursor: pointer; }
+        .popup-thumb img { width: 100%; border-radius: 8px; border: 2px solid #000; }
+        .play-icon-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; }
+        .popup-text-small { font-size: 14px; color: #333; line-height: 1.4; }
+        .popup-btn-yellow { display: block; width: 100%; background: #ffea00; color: #000; padding: 18px; border-radius: 5px; font-size: 20px; font-weight: 900; text-decoration: none; border: 3px solid #0000ff; text-transform: uppercase; }
 
+        /* BOTÃO DE COMPRA (OFFER) */
+        .elButton { display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px; margin-top: 10px; text-transform: uppercase; cursor: pointer; }
         .esconder { display: none !important; }
-        .cf-viewer-wrapper { background-color: #fffeec; border: 1px solid #e7e4b1; padding: 15px; border-radius: 6px; display: inline-block; margin: 20px 0 5px; font-size: 16px; font-weight: 700; color: #444; width: 100%; max-width: 580px; }
-        .blue-link { display: block; color: #0000ee; text-decoration: underline; font-size: 17px; font-weight: 600; margin-top: 12px; cursor: pointer; }
-        .dr-grant-note { background: #fffef2; border: 2px dashed #d4d0a5; padding: 30px; border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left; }
-        .dr-grant-note p { font-family: 'Inter', sans-serif; font-size: 19px; line-height: 1.6; color: #333; }
         footer { border-top: 1px solid #f0f0f0; padding: 60px 0; color: #999; font-size: 13px; margin-top: 50px; }
-        footer a { color: #999; text-decoration: none; margin: 0 10px; }
     </style>
 </head>
 
 <body>
-    <div id="mobile-floating-cta">
-        <a href="https://hotm.io/THEDAVINCIFREQUENCYProtocol" class="mobile-popup-btn">
-            ⚡ SECURE YOUR ACCESS NOW
-        </a>
-    </div>
-
     <div id="exit-popup">
         <div class="popup-content">
-            <div class="close-popup" onclick="$('#exit-popup').fadeOut();">×</div>
-            <div class="popup-headline">WAIT!</div>
-            <p class="popup-sub">BEFORE YOU GO...<br>ACTIVATE YOUR SILENCE PORTAL</p>
-            <a href="https://hotm.io/THEDAVINCIFREQUENCYProtocol" class="popup-btn">SECURE ACCESS NOW</a>
+            <div class="popup-wait">WAIT! In Just 1:45...</div>
+            <div class="popup-reveal">I'll Reveal My 7-Second Ear Trick That Silences Tinnitus Fast!</div>
+            <div class="popup-flex">
+                <div class="popup-thumb" onclick="$('#exit-popup').fadeOut(); playVslClean();">
+                    <img src="images/33ab840a118660e348a6a49784dd0b70.png">
+                    <img src="https://cdn-icons-png.flaticon.com/512/0/375.png" class="play-icon-overlay">
+                </div>
+                <div class="popup-text-small">It's a 7-second "ear trick" you can do at home right now. Believe me, you'll love this.</div>
+            </div>
+            <a href="#" class="popup-btn-yellow" onclick="$('#exit-popup').fadeOut(); playVslClean(); return false;">Keep Watching To See My 7-Second Ear Trick >></a>
         </div>
     </div>
 
@@ -145,61 +135,37 @@
     </div>
 
     <div class="container">
-        <h1 class="elHeadline">
-            <span class="highlight-red">The Greatest Enemy of Tinnitus?</span><br>
-            This 5-Minute Evening Routine Ends The Ear Ringing
-        </h1>
-
-        <div class="fb-tag-container">
-            <div style="background:linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);color:white;padding:10px 20px;border-radius:30px;display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:500;box-shadow:0 3px 15px rgba(139, 92, 246, 0.3), 0 0 25px rgba(139, 92, 246, 0.15);font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;position:relative;overflow:hidden;">
-                <div style="position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);transform:rotate(45deg);animation:shimmer-bg 3s infinite;"></div>
-                <div style="width:8px;height:8px;background:#10b981;border-radius:50%;position:relative;z-index:1;animation:pulse-dot 2s infinite;">
-                    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%, -50%);width:100%;height:100%;background:#10b981;border-radius:50%;animation:pulse-ring 2s infinite;opacity:0.6;"></div>
-                </div>
-                <span style="font-weight:600;font-size:14px;position:relative;z-index:1;" id="fbViewer">749</span>
-                <span style="position:relative;z-index:1;">people from</span>
-                <span style="font-weight:600;color:#fbbf24;position:relative;z-index:1;">Facebook</span>
-                <span style="position:relative;z-index:1;">are watching</span>
-            </div>
-        </div>
+        <h1 class="elHeadline"><span class="highlight-red">The Greatest Enemy of Tinnitus?</span><br>This 5-Minute Evening Routine Ends The Ear Ringing</h1>
 
         <div class="video-container-vsl" id="vsl-main-container">
-            <div id="video-lock-overlay"></div> <div id="video-cover" onclick="playVslClean()" style="position: absolute; inset: 0; z-index: 100; background: #000; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;">
-                <div style="font-size: 40px; margin-bottom: 10px;">🔊</div>
-                <div style="background: #ff0000; color: #fff; padding: 18px 30px; border-radius: 50px; font-weight: 800; font-size: 18px; text-transform: uppercase;">CLICK TO WATCH WITH SOUND</div>
+            <div id="video-lock-overlay"></div>
+            
+            <div id="video-cover" onclick="playVslClean()" style="position: absolute; inset: 0; z-index: 100; background: #000; cursor: pointer;">
+                <iframe id="vsl-preview" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=true&controls=false" style="position: absolute; top:0; left:0; width:100%; height:100%; border:0; pointer-events:none; opacity: 0.6;"></iframe>
+                
+                <div class="yt-play-btn"></div>
+                <div style="position: absolute; bottom: 15%; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.7); color: #fff; padding: 10px 20px; border-radius: 30px; font-weight: 800; font-size: 14px; text-transform: uppercase; white-space: nowrap;">CLICK TO UNMUTE & PLAY</div>
             </div>
+            
             <div class="video-wrapper" id="vsl-holder"></div>
         </div>
 
         <div id="offer" class="esconder">
-            <div class="cf-viewer-wrapper">
+            <div style="background-color: #fffeec; border: 1px solid #e7e4b1; padding: 15px; border-radius: 6px; display: inline-block; margin: 20px 0; font-weight: 700; width: 100%; max-width: 580px;">
                 <span><span id="buy-count">22</span> Others Are Purchasing The DaVinci Frequency Right Now</span>
             </div>
             <br>
             <a href="https://hotm.io/THEDAVINCIFREQUENCYProtocol" class="elButton">GET ACCESS NOW</a>
-            <a href="https://hotm.io/THEDAVINCIFREQUENCYProtocol" class="blue-link">YES! I Want To Stop My Ringing Ears Forever.</a>
-
-            <div class="dr-grant-note">
-                <p>
-                    <b style="color:red; font-size:22px;">A Personal Note From Dr. Grant:</b><br><br>
-                    "If you are over 60 and have silently resigned yourself to the ringing, I beg you: <b style="color:red; text-decoration: underline;">never give up on yourself.</b> Please, just give this an honest try for a few days; words cannot describe this, you simply have to experience it."
-                </p>
+            
+            <div class="dr-grant-note" style="margin-top: 30px;">
+                <p><b style="color:red; font-size:22px;">A Personal Note From Dr. Grant:</b><br><br>
+                "If you are over 60, I beg you: <b style="color:red; text-decoration: underline;">never give up.</b> Please, just give this an honest try for a few days."</p>
                 <img src="images/banner1.svg" style="margin-top:30px; width:100%; border-radius:10px;">
             </div>
-            <a href="https://hotm.io/THEDAVINCIFREQUENCYProtocol" class="elButton">YES! I WANT SILENCE</a>
-        </div>
-
-        <div class="stars-section" style="margin: 30px auto 10px; max-width: 320px;">
-            <a href="https://hotm.io/THEDAVINCIFREQUENCYProtocol" style="text-decoration: none;">
-                <img src="images/fc00db42cd71a4a2d6da13f0aba6359d_1.png" style="width: 100%;">
-                <p style="color:#0000ee; text-decoration:underline; font-weight:600; margin-top:5px;">(Add To Cart)</p>
-            </a>
         </div>
 
         <footer>
             <p>© 2026 DaVinci Frequency Protocol. All rights reserved.</p>
-            <div style="margin: 15px 0;"><a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></div>
-            <p>Support: support@davincifrequency.online</p>
         </footer>
     </div>
 
@@ -212,45 +178,35 @@
         }, 100);
 
         function playVslClean() {
+            // Troca o preview pelo vídeo real com som liberado
             document.getElementById('vsl-holder').innerHTML = `
-                <iframe id="vsl-iframe" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=false&controls=false&playsinline=1" allow="autoplay;fullscreen" allowfullscreen></iframe>
+                <iframe id="vsl-iframe" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=false&controls=false" allow="autoplay;fullscreen" allowfullscreen></iframe>
             `;
             $('#video-cover').fadeOut(200);
-            // Ativa o bloqueio de cliques no Desktop
             document.getElementById('vsl-main-container').classList.add('locked');
         }
 
-        // 1. GATILHO MOBILE AOS 5 MINUTOS (300 segundos)
-        setTimeout(function() {
-            $('#mobile-floating-cta').addClass('show');
-        }, 300 * 1000);
-
-        // 2. DELAY DA OFERTA GERAL (1367 segundos)
+        // 1. DELAY DA OFERTA (22 minutos e 47 segundos = 1367s)
         var pitchTime = 1367; 
-        var displayed = false;
-        function showOffer() {
-            if (!displayed) { displayed = true; $('#offer').removeClass('esconder').hide().fadeIn(1000); }
-        }
-        setTimeout(showOffer, pitchTime * 1000);
+        setTimeout(function() {
+            $('#offer').removeClass('esconder').hide().fadeIn(1000);
+        }, pitchTime * 1000);
 
-        // Contadores Dinâmicos
+        // 2. CONTADOR DINÂMICO
         setInterval(function() {
-            var fb = parseInt($('#fbViewer').text()) + (Math.floor(Math.random() * 5) - 2);
-            $('#fbViewer').text(fb > 700 ? fb : 749);
             var buy = parseInt($('#buy-count').text()) + (Math.floor(Math.random() * 3) - 1);
             $('#buy-count').text(buy > 15 ? buy : 22);
         }, 4000);
 
-        // POP-UP DE SAÍDA
+        // 3. EXIT POP-UP (Desktop Mouseleave)
         document.addEventListener("mouseleave", function(e){
             if(e.clientY < 0) { $('#exit-popup').css('display', 'flex').hide().fadeIn(); }
         });
 
-        // Mobile Back Button
+        // 4. BACK BUTTON POP-UP (Mobile)
         (function() {
             history.pushState(null, null, location.href);
             window.onpopstate = function () {
-                history.pushState(null, null, location.href);
                 $('#exit-popup').css('display', 'flex').hide().fadeIn();
             };
         })();
