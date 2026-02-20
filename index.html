@@ -65,7 +65,6 @@
 
         h1.elHeadline { font-family: 'Lato', sans-serif; font-weight: 900; color: #0d0f61; font-size: 32px; line-height: 1.2; margin: 25px 0 15px; }
         .highlight-red { color: #e31b23; }
-        @media (min-width: 768px) { h1.elHeadline { font-size: 46px; } }
 
         .video-container-vsl { position: relative; max-width: 750px; margin: 0 auto 25px; box-shadow: 0 25px 60px rgba(0,0,0,0.3); border: 8px solid #000; border-radius: 12px; overflow: hidden; background: #000; }
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
@@ -75,37 +74,33 @@
         #video-lock-overlay { display: none; position: absolute; inset: 0; z-index: 99; background: transparent; }
         @media (min-width: 1025px) { .locked #video-lock-overlay { display: block; } }
 
-        /* BOTÃO MOBILE ESTILO YOUTUBE (GIRANDO E PULSANDO) */
+        /* BOTÃO MOBILE ESTILO CARREGANDO (ÚNICO E LIMPO) */
         @keyframes rotate-ring { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
-        @keyframes yt-pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes yt-pulse { 0% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.1); } 100% { transform: translate(-50%, -50%) scale(1); } }
         
         .mobile-play-btn-container {
             display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 110px; height: 110px; z-index: 110; cursor: pointer;
+            width: 120px; height: 120px; z-index: 110; cursor: pointer;
         }
         .play-loader-ring {
             position: absolute; top: 50%; left: 50%; width: 100%; height: 100%;
-            border: 4px solid rgba(255, 255, 255, 0.2); border-top: 4px solid #ff0000;
-            border-radius: 50%; animation: rotate-ring 1.5s linear infinite;
+            border: 5px solid rgba(255, 255, 255, 0.1); border-top: 5px solid #ff0000;
+            border-radius: 50%; animation: rotate-ring 1.2s linear infinite;
         }
         .yt-red-btn {
             position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 75px; height: 52px; background: #FF0000; border-radius: 14px;
+            width: 85px; height: 60px; background: #FF0000; border-radius: 16px;
             display: flex; align-items: center; justify-content: center;
-            animation: yt-pulse 1.2s infinite ease-in-out;
+            animation: yt-pulse 1.5s infinite ease-in-out;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
         }
         .yt-red-btn::after {
-            content: ""; width: 0; height: 0; border-top: 10px solid transparent; 
-            border-bottom: 10px solid transparent; border-left: 18px solid #fff; margin-left: 4px;
+            content: ""; width: 0; height: 0; border-top: 14px solid transparent; 
+            border-bottom: 14px solid transparent; border-left: 22px solid #fff; margin-left: 6px;
         }
         @media (max-width: 1024px) { .mobile-play-btn-container { display: block; } }
-        
-        /* OCULTAR ELEMENTOS DE CAPA NO DESKTOP PARA AUTOPLAY */
-        @media (min-width: 1025px) { 
-            #video-cover { display: none !important; } 
-        }
 
-        /* POP-UP CONCORRENTE */
+        /* POP-UP RÉPLICA CONCORRENTE */
         #exit-popup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000000; align-items: center; justify-content: center; }
         .popup-content { background: #fff; padding: 25px; border-radius: 5px; max-width: 550px; width: 95%; text-align: center; position: relative; border: 3px solid #ccc; }
         .popup-wait { color: #ff0000; font-weight: 900; font-size: 32px; font-family: 'Lato', sans-serif; }
@@ -116,10 +111,11 @@
         .popup-text-small { font-size: 14px; color: #333; line-height: 1.4; }
         .popup-btn-yellow { display: block; width: 100%; background: #ffea00; color: #000; padding: 18px; border-radius: 5px; font-size: 20px; font-weight: 900; text-decoration: none; border: 3px solid #0000ff; text-transform: uppercase; }
 
-        /* ESTRELAS E COMPRA */
+        /* ELEMENTOS ORIGINAIS (ESTRELAS E DR GRANT) */
         .elButton { display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px; margin-top: 10px; text-transform: uppercase; cursor: pointer; }
         .esconder { display: none !important; }
         .dr-grant-note { background: #fffef2; border: 2px dashed #d4d0a5; padding: 30px; border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left; }
+        .dr-grant-note p { font-family: 'Inter', sans-serif; font-size: 19px; line-height: 1.6; color: #333; }
         footer { border-top: 1px solid #f0f0f0; padding: 60px 0; color: #999; font-size: 13px; margin-top: 50px; }
     </style>
 </head>
@@ -136,7 +132,7 @@
                 </div>
                 <div class="popup-text-small">It's a 7-second "ear trick" you can do at home right now. Believe me, you'll love this.</div>
             </div>
-            <a href="#" class="popup-btn-yellow" onclick="$('#exit-popup').fadeOut(); playVslClean(); return false;">Keep Watching To See My 7-Second Ear Trick >></a>
+            <a href="#" class="popup-btn-yellow" id="btn-start-vsl">Keep Watching To See My 7-Second Ear Trick >></a>
         </div>
     </div>
 
@@ -158,7 +154,8 @@
                     <div class="play-loader-ring"></div>
                     <div class="yt-red-btn"></div>
                 </div>
-                <div style="position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); background: #ff0000; color: #fff; padding: 10px 20px; border-radius: 50px; font-weight: 800; font-size: 13px; text-transform: uppercase; white-space: nowrap;">CLICK TO UNMUTE & PLAY</div>
+
+                <div style="position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: #fff; padding: 8px 20px; border-radius: 50px; font-weight: 800; font-size: 12px; text-transform: uppercase; white-space: nowrap;">CLICK TO PLAY WITH SOUND</div>
             </div>
             
             <div class="video-wrapper" id="vsl-holder"></div>
@@ -190,22 +187,30 @@
     <script>
         var width = 0;
         var interval = setInterval(function() {
-            if (width >= 100) { clearInterval(interval); $('#preloader').fadeOut(300); }
+            if (width >= 100) { 
+                clearInterval(interval); 
+                $('#preloader').fadeOut(300, function(){
+                    // Entrada Desktop via Pop-up
+                    if (window.innerWidth >= 1025) {
+                        $('#exit-popup').css('display', 'flex').hide().fadeIn();
+                    }
+                }); 
+            }
             else { width += Math.random() * 45; $('#bar').css('width', width + '%'); }
         }, 100);
 
         function playVslClean() {
-            document.getElementById('vsl-holder').innerHTML = `<iframe id="vsl-iframe" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=false&controls=false" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
+            // Um clique: Remove cover e carrega o player real desmutado
+            document.getElementById('vsl-holder').innerHTML = `<iframe id="vsl-iframe" src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=false&controls=false&playsinline=1" allow="autoplay;fullscreen" allowfullscreen></iframe>`;
             $('#video-cover').fadeOut(200);
+            $('#exit-popup').fadeOut(200);
             document.getElementById('vsl-main-container').classList.add('locked');
         }
 
-        // AUTO-PLAY DESKTOP (Executa ao carregar se for Desktop)
-        window.onload = function() {
-            if (window.innerWidth >= 1025) {
-                playVslClean();
-            }
-        };
+        $('#btn-start-vsl').on('click', function(e){
+            e.preventDefault();
+            playVslClean();
+        });
 
         setTimeout(function() { $('#offer').removeClass('esconder').hide().fadeIn(1000); }, 1367 * 1000);
 
