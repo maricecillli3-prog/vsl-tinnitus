@@ -111,6 +111,7 @@
         .popup-flex { display: flex; gap: 15px; align-items: center; text-align: left; margin-bottom: 20px; }
         .popup-thumb { width: 45%; border-radius: 8px; position: relative; cursor: pointer; }
         .popup-thumb img { width: 100%; border-radius: 8px; border: 2px solid #000; }
+        /* REMOVIDO: .play-icon-overlay { ... } */
         .popup-text-small { font-size: 14px; color: #333; line-height: 1.4; }
         .popup-btn-yellow { display: block; width: 100%; background: #ffea00; color: #000; padding: 18px; border-radius: 5px; font-size: 20px; font-weight: 900; text-decoration: none; border: 3px solid #0000ff; text-transform: uppercase; }
 
@@ -132,8 +133,7 @@
             <div class="popup-flex">
                 <div class="popup-thumb" onclick="$('#exit-popup').fadeOut(); playVslClean();">
                     <img src="images/687464baa74f39b47aca7abf1a71422d_2.webp">
-                    <img src="https://cdn-icons-png.flaticon.com/512/0/375.png" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:40px;">
-                </div>
+                    </div>
                 <div class="popup-text-small">It's a 7-second "ear trick" you can do at home right now. Believe me, you'll love this.</div>
             </div>
             <a href="#" class="popup-btn-yellow" onclick="$('#exit-popup').fadeOut(); playVslClean(); return false;">Keep Watching To See My 7-Second Ear Trick >></a>
