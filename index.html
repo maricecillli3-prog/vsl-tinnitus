@@ -10,6 +10,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Lato:900|Open+Sans:400,600,700|Oswald:700|Inter:500" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://player.vimeo.com/api/player.js"></script>
 
     <script>
     !function(f,b,e,v,n,t,s)
@@ -47,10 +48,6 @@
         });
       },{passive:true});
       setInterval(function(){ send("time_on_page", {seconds:Math.round((Date.now()-S)/1000)}); },30000);
-      D.addEventListener("click", function(e){
-        var el=e.target.closest("a[href*='checkout'], .elButton, .popup-btn-yellow");
-        if(el) send("cta_click", {text: el.innerText.trim() || "cta"});
-      });
     })();
     </script>
 
@@ -70,37 +67,20 @@
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
         #vsl-iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* TRAVA DESKTOP */
+        /* BLINDAGEM DESKTOP */
         #video-lock-overlay { display: none; position: absolute; inset: 0; z-index: 99; background: transparent; }
         @media (min-width: 1025px) { .locked #video-lock-overlay { display: block; } }
 
-        /* BOTÃO MOBILE ESTILO CARREGANDO (POLIDO) */
+        /* BOTÃO MAGNÉTICO (MOBILE) */
         @keyframes rotate-ring { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
         @keyframes yt-pulse { 0% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.1); } 100% { transform: translate(-50%, -50%) scale(1); } }
-        
-        .mobile-play-btn-container {
-            display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 110px; height: 110px; z-index: 110; cursor: pointer;
-        }
-        .play-loader-ring {
-            position: absolute; top: 50%; left: 50%; width: 100%; height: 100%;
-            border: 5px solid rgba(255, 255, 255, 0.1); border-top: 5px solid #ff0000;
-            border-radius: 50%; animation: rotate-ring 1s linear infinite;
-        }
-        .yt-red-btn {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 80px; height: 55px; background: #FF0000; border-radius: 15px;
-            display: flex; align-items: center; justify-content: center;
-            animation: yt-pulse 1.3s infinite ease-in-out;
-            box-shadow: 0 0 25px rgba(255, 0, 0, 0.5);
-        }
-        .yt-red-btn::after {
-            content: ""; width: 0; height: 0; border-top: 12px solid transparent; 
-            border-bottom: 12px solid transparent; border-left: 20px solid #fff; margin-left: 5px;
-        }
+        .mobile-play-btn-container { display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 110px; height: 110px; z-index: 110; cursor: pointer; }
+        .play-loader-ring { position: absolute; top: 50%; left: 50%; width: 100%; height: 100%; border: 5px solid rgba(255, 255, 255, 0.1); border-top: 5px solid #ff0000; border-radius: 50%; animation: rotate-ring 1s linear infinite; }
+        .yt-red-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 55px; background: #FF0000; border-radius: 15px; display: flex; align-items: center; justify-content: center; animation: yt-pulse 1.3s infinite ease-in-out; box-shadow: 0 0 25px rgba(255, 0, 0, 0.5); }
+        .yt-red-btn::after { content: ""; width: 0; height: 0; border-top: 12px solid transparent; border-bottom: 12px solid transparent; border-left: 20px solid #fff; margin-left: 6px; }
         @media (max-width: 1024px) { .mobile-play-btn-container { display: block; } }
 
-        /* POP-UP RÉPLICA CONCORRENTE */
+        /* POP-UP CONCORRENTE */
         #exit-popup { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000000; align-items: center; justify-content: center; }
         .popup-content { background: #fff; padding: 25px; border-radius: 5px; max-width: 550px; width: 95%; text-align: center; position: relative; border: 3px solid #ccc; }
         .popup-wait { color: #ff0000; font-weight: 900; font-size: 32px; font-family: 'Lato', sans-serif; }
@@ -111,11 +91,10 @@
         .popup-text-small { font-size: 14px; color: #333; line-height: 1.4; }
         .popup-btn-yellow { display: block; width: 100%; background: #ffea00; color: #000; padding: 18px; border-radius: 5px; font-size: 20px; font-weight: 900; text-decoration: none; border: 3px solid #0000ff; text-transform: uppercase; }
 
-        /* ELEMENTOS ORIGINAIS (ESTRELAS E DR GRANT) */
+        /* ESTRUTURA ORIGINAL */
         .elButton { display: inline-block; background: #ffea00; border-bottom: 5px solid #e5c100; color: #0d0f61; padding: 22px 40px; border-radius: 12px; font-family: 'Oswald', sans-serif; font-size: 28px; font-weight: 700; text-decoration: none; width: 100%; max-width: 580px; margin-top: 10px; text-transform: uppercase; cursor: pointer; }
         .esconder { display: none !important; }
         .dr-grant-note { background: #fffef2; border: 2px dashed #d4d0a5; padding: 30px; border-radius: 12px; margin: 40px auto; max-width: 850px; text-align: left; }
-        .dr-grant-note p { font-family: 'Inter', sans-serif; font-size: 19px; line-height: 1.6; color: #333; }
         footer { border-top: 1px solid #f0f0f0; padding: 60px 0; color: #999; font-size: 13px; margin-top: 50px; }
         footer a { color: #999; text-decoration: none; margin: 0 10px; }
     </style>
@@ -149,17 +128,16 @@
             <div id="video-lock-overlay"></div>
             
             <div id="video-cover" onclick="playVslClean()" style="position: absolute; inset: 0; z-index: 100; background: #000; cursor: pointer;">
-                <iframe src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=true&controls=false" style="position: absolute; top:0; left:0; width:100%; height:100%; border:0; pointer-events:none; opacity: 0.5;"></iframe>
-                
                 <div class="mobile-play-btn-container">
                     <div class="play-loader-ring"></div>
                     <div class="yt-red-btn"></div>
                 </div>
-
                 <div style="position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.6); color: #fff; padding: 8px 20px; border-radius: 50px; font-weight: 800; font-size: 12px; text-transform: uppercase; white-space: nowrap;">CLICK TO PLAY WITH SOUND</div>
             </div>
             
-            <div class="video-wrapper" id="vsl-holder"></div>
+            <div class="video-wrapper">
+                <iframe id="vsl-iframe" src="https://player.vimeo.com/video/1166808234?autoplay=1&muted=1&background=1&autopause=0" allow="autoplay;fullscreen" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0"></iframe>
+            </div>
         </div>
 
         <div id="offer" class="esconder">
@@ -190,38 +168,30 @@
     </div>
 
     <script>
+        var iframe = document.querySelector('#vsl-iframe');
+        var player = new Vimeo.Player(iframe);
+
         var width = 0;
         var interval = setInterval(function() {
             if (width >= 100) { 
                 clearInterval(interval); 
                 $('#preloader').fadeOut(300, function(){
-                    if (window.innerWidth >= 1025) {
-                        $('#exit-popup').css('display', 'flex').hide().fadeIn();
-                    }
+                    if (window.innerWidth >= 1025) { $('#exit-popup').css('display', 'flex').hide().fadeIn(); }
                 }); 
             }
             else { width += Math.random() * 45; $('#bar').css('width', width + '%'); }
         }, 100);
 
         function playVslClean() {
-            // FIX: Injeta o iframe com autoplay e muted=false direto na raiz do clique
-            document.getElementById('vsl-holder').innerHTML = `
-                <iframe id="vsl-iframe" 
-                    src="https://player.mediadelivery.net/embed/601153/c1fa1ce0-93d0-4c50-ac46-630443bc88b6?autoplay=true&muted=false&controls=false" 
-                    allow="autoplay;fullscreen" 
-                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
-                    allowfullscreen>
-                </iframe>`;
-            
-            $('#video-cover').fadeOut(200);
-            $('#exit-popup').fadeOut(200);
-            document.getElementById('vsl-main-container').classList.add('locked');
+            player.setMuted(false).then(function() {
+                player.play();
+                $('#video-cover').fadeOut(200);
+                $('#exit-popup').fadeOut(200);
+                document.getElementById('vsl-main-container').classList.add('locked');
+            });
         }
 
-        $('#btn-start-vsl').on('click', function(e){
-            e.preventDefault();
-            playVslClean();
-        });
+        $('#btn-start-vsl').on('click', function(e){ e.preventDefault(); playVslClean(); });
 
         setTimeout(function() { $('#offer').removeClass('esconder').hide().fadeIn(1000); }, 1367 * 1000);
 
