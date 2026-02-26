@@ -27,17 +27,49 @@
 
     <script>
     (function(){
+      // URL do seu Supabase
       var W="https://hgxpvsgfhypyjumqqjip.supabase.co/rest/v1/tracking_events";
-      var K="sb_publishable_i7R82nqYRC4JKacvknEW-Q_9HZoi1rn";
-      var S=Date.now(),D=document;
-      function send(type, meta){
-        var body = JSON.stringify({event_type: type, metadata: meta, url_origem: location.href});
+      
+      // CHAVE ANON CORRETA (Copiada da sua imagem do Supabase)
+      var K="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhneHB2c2dmaHlweWp1bXFxamlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NTUyMjEsImV4cCI6MjA4NzAzMTIyMX0.vnUgKaH2w5AFlsTnqAccaTgxx6QoOzPfca132fq60Yo"; 
+      // NOTA: Cole acima a sua Anon Key COMPLETA que começa com eyJ.
+
+      var S=Date.now(), D=document;
+      var session = crypto.randomUUID ? crypto.randomUUID() : S.toString();
+
+      function send(type, meta, val){
+        var body = JSON.stringify({
+          event_type: type, 
+          campaign_id: "1", // O ID "1" é obrigatório para o seu dashboard ler
+          value: val || 0,
+          session_id: session,
+          metadata: meta || {}, 
+          url_origem: location.href
+        });
+
         fetch(W, {
           method: "POST",
-          headers: { "apikey": K, "Authorization": "Bearer " + K, "Content-Type": "application/json", "Prefer": "return=minimal" },
-          body: body, keepalive: true
-        });
+          headers: { 
+            "apikey": K, 
+            "Authorization": "Bearer " + K, 
+            "Content-Type": "application/json", 
+            "Prefer": "return=minimal" 
+          },
+          body: body, 
+          keepalive: true
+        }).catch(function(e){ console.log("Erro rastreio:", e); });
       }
+
+      // Dispara PageView IMEDIATAMENTE ao carregar (Isso faz o dashboard sair do 0)
+      send("page_view");
+
+      // Rastreia cliques nos botões de compra (Revenue/Vendas)
+      D.addEventListener("click", function(e){
+        if(e.target.closest(".elButton, .popup-btn-yellow")){
+          send("cta_click", { btn_text: "Get Access Now" });
+        }
+      });
+
       var fired={};
       window.addEventListener("scroll", function(){
         var h=D.documentElement.scrollHeight-window.innerHeight;
@@ -47,6 +79,7 @@
           if(p>=t&&!fired[t]){fired[t]=1; send("scroll", {depth:t});}
         });
       },{passive:true});
+
       setInterval(function(){ send("time_on_page", {seconds:Math.round((Date.now()-S)/1000)}); },30000);
     })();
     </script>
