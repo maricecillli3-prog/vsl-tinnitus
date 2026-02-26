@@ -27,25 +27,26 @@
 
     <script>
     (function(){
-      // URL do seu Supabase
-      var W="https://hgxpvsgfhypyjumqqjip.supabase.co/rest/v1/tracking_events";
+      // 1. Configurações Inalteráveis para o Dashboard "1"
+      var W = "https://hgxpvsgfhypyjumqqjip.supabase.co/rest/v1/tracking_events";
+      var K = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhneHB2c2dmaHlweWp1bXFxamlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NTUyMjEsImV4cCI6MjA4NzAzMTIyMX0.vnUgKaH2w5AFlsTnqAccaTgxx6QoOzPfca132fq60Yo";
       
-      // CHAVE ANON CORRETA (Copiada da sua imagem do Supabase)
-      var K="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhneHB2c2dmaHlweWp1bXFxamlwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NTUyMjEsImV4cCI6MjA4NzAzMTIyMX0.vnUgKaH2w5AFlsTnqAccaTgxx6QoOzPfca132fq60Yo"; 
-      // NOTA: Cole acima a sua Anon Key COMPLETA que começa com eyJ.
-
-      var S=Date.now(), D=document;
-      var session = crypto.randomUUID ? crypto.randomUUID() : S.toString();
+      var S = Date.now(), D = document;
+      // Gera uma sessão única para não duplicar dados
+      var session = crypto.randomUUID ? crypto.randomUUID() : "sess_" + S;
 
       function send(type, meta, val){
-        var body = JSON.stringify({
+        var payload = {
           event_type: type, 
-          campaign_id: "1", // O ID "1" é obrigatório para o seu dashboard ler
+          campaign_id: "1", 
           value: val || 0,
           session_id: session,
           metadata: meta || {}, 
           url_origem: location.href
-        });
+        };
+
+        // Log para você ver no console da página de vendas que está enviando
+        console.log("🚀 Enviando " + type + " para o Dashboard...");
 
         fetch(W, {
           method: "POST",
@@ -55,21 +56,25 @@
             "Content-Type": "application/json", 
             "Prefer": "return=minimal" 
           },
-          body: body, 
+          body: JSON.stringify(payload), 
           keepalive: true
-        }).catch(function(e){ console.log("Erro rastreio:", e); });
+        })
+        .then(function(r) { if(r.ok) console.log("✅ " + type + " registrado!"); })
+        .catch(function(e){ console.error("❌ Erro no rastreio:", e); });
       }
 
-      // Dispara PageView IMEDIATAMENTE ao carregar (Isso faz o dashboard sair do 0)
+      // Dispara o PageView assim que carregar
       send("page_view");
 
-      // Rastreia cliques nos botões de compra (Revenue/Vendas)
+      // Rastreia cliques nos botões de compra (Estrutura original)
       D.addEventListener("click", function(e){
-        if(e.target.closest(".elButton, .popup-btn-yellow")){
-          send("cta_click", { btn_text: "Get Access Now" });
+        var btn = e.target.closest(".elButton, .popup-btn-yellow");
+        if(btn){
+          send("cta_click", { texto: btn.innerText.substring(0, 30) });
         }
       });
 
+      // Rastreio de Scroll original
       var fired={};
       window.addEventListener("scroll", function(){
         var h=D.documentElement.scrollHeight-window.innerHeight;
@@ -80,7 +85,8 @@
         });
       },{passive:true});
 
-      setInterval(function(){ send("time_on_page", {seconds:Math.round((Date.now()-S)/1000)}); },30000);
+      // Timer a cada 30s
+      setInterval(function(){ send("time_on_page", {seconds:Math.round((Date.now()-S)/1000)}); }, 30000);
     })();
     </script>
 
